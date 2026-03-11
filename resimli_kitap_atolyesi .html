@@ -1,0 +1,2112 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kitap Atölyesi">
+<title>Resimli Kitap Atölyesi</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F6F1E9;
+  --cream2: #EDE6D8;
+  --cream3: #E2D9C8;
+  --white: #FDFAF5;
+  --ink: #1C1814;
+  --ink2: #3D3830;
+  --ink3: #6B6359;
+  --ink4: #9C9288;
+  --terra: #B85C2A;
+  --terra2: #9A4A20;
+  --terra-bg: #FDF2EC;
+  --forest: #2D5A1B;
+  --forest-bg: #EEF5EB;
+  --plum: #4A3580;
+  --plum-bg: #F0ECFA;
+  --gold: #8A6A00;
+  --gold-bg: #FDF7E0;
+  --sidebar-w: 260px;
+  --hdr-h: 64px;
+  --r: 14px;
+  --r-sm: 9px;
+  --shadow: 0 2px 16px rgba(28,24,20,.08);
+  --shadow-md: 0 4px 24px rgba(28,24,20,.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; background: var(--ink); }
+body { font-family: 'Lato', sans-serif; color: var(--ink); font-size: 15px; }
+
+/* ─── LAYOUT ─── */
+#shell {
+  display: flex;
+  height: 100dvh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  background: var(--ink);
+}
+
+/* ─── SIDEBAR ─── */
+#sidebar {
+  width: var(--sidebar-w);
+  background: #16130F;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 18px 0 0 18px;
+}
+.sb-brand {
+  padding: 28px 22px 20px;
+  border-bottom: 1px solid #2A2520;
+}
+.sb-brand-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--cream);
+  letter-spacing: .02em;
+  line-height: 1.2;
+}
+.sb-brand-sub {
+  font-size: 10px;
+  color: #666;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+.sb-book-info {
+  margin: 16px 14px;
+  background: #1E1A15;
+  border: 1px solid #2A2520;
+  border-radius: var(--r-sm);
+  padding: 12px 14px;
+}
+.sb-book-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  color: var(--cream);
+  font-style: italic;
+  line-height: 1.3;
+  min-height: 20px;
+}
+.sb-book-tag {
+  font-size: 10px;
+  color: var(--terra);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.sb-nav { flex: 1; overflow-y: auto; padding: 8px 10px; scrollbar-width: none; }
+.sb-nav::-webkit-scrollbar { display: none; }
+.sb-section-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #444;
+  padding: 14px 12px 6px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 12px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all .18s;
+  margin-bottom: 2px;
+  border: 1px solid transparent;
+}
+.nav-item:hover { background: #1E1A15; }
+.nav-item.active { background: var(--terra); border-color: var(--terra2); }
+.nav-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  background: #1E1A15;
+}
+.nav-item.active .nav-icon { background: rgba(255,255,255,.15); }
+.nav-label { font-size: 13px; font-weight: 600; color: #888; letter-spacing: .01em; }
+.nav-item.active .nav-label { color: white; }
+.nav-badge {
+  margin-left: auto;
+  background: rgba(255,255,255,.1);
+  color: #888;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+.nav-item.active .nav-badge { background: rgba(255,255,255,.25); color: white; }
+.sb-bottom {
+  padding: 14px 14px 18px;
+  border-top: 1px solid #2A2520;
+}
+.sb-kelime-bar {
+  background: #1E1A15;
+  border-radius: var(--r-sm);
+  padding: 11px 13px;
+}
+.sb-kw-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.sb-kw-label { font-size: 10px; color: #555; letter-spacing: .07em; text-transform: uppercase; }
+.sb-kw-val { font-size: 13px; font-weight: 700; color: var(--terra); }
+.sb-bar-track { height: 4px; background: #2A2520; border-radius: 2px; overflow: hidden; }
+.sb-bar-fill { height: 100%; background: linear-gradient(90deg, var(--terra2), var(--terra)); border-radius: 2px; transition: width .6s ease; }
+
+/* ─── MAIN ─── */
+#main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--cream);
+  border-radius: 0 18px 18px 0;
+  overflow: hidden;
+}
+
+/* ─── TOP BAR ─── */
+#topbar {
+  height: var(--hdr-h);
+  background: var(--white);
+  border-bottom: 1px solid var(--cream3);
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  gap: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 1px 0 var(--cream3);
+}
+.topbar-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--ink);
+  flex: 1;
+}
+.topbar-sub {
+  font-size: 12px;
+  color: var(--ink4);
+  font-style: italic;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  transition: all .18s;
+  font-family: 'Lato', sans-serif;
+}
+.btn-primary { background: var(--terra); color: white; }
+.btn-primary:hover { background: var(--terra2); }
+.btn-ghost { background: transparent; color: var(--ink3); border: 1.5px solid var(--cream3); }
+.btn-ghost:hover { background: var(--cream2); border-color: var(--cream3); }
+.btn-sm { padding: 7px 14px; font-size: 12px; }
+.btn-forest { background: var(--forest); color: white; }
+.btn-plum { background: var(--plum); color: white; }
+
+/* ─── CONTENT ─── */
+#content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 28px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+#content::-webkit-scrollbar { width: 6px; }
+#content::-webkit-scrollbar-track { background: transparent; }
+#content::-webkit-scrollbar-thumb { background: var(--cream3); border-radius: 3px; }
+
+/* ─── SCREENS ─── */
+.screen { display: none; animation: fadeIn .22s ease; }
+.screen.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ─── CARDS ─── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--cream3);
+  border-radius: var(--r);
+  padding: 22px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+.card-sub { font-size: 12px; color: var(--ink4); margin-top: -10px; margin-bottom: 14px; }
+.card-dark { background: var(--ink); border-color: #2A2520; }
+.card-terra { background: var(--terra-bg); border-color: rgba(184,92,42,.2); }
+.card-forest { background: var(--forest-bg); border-color: rgba(45,90,27,.2); }
+
+/* ─── GRID ─── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+
+/* ─── STAT CARDS ─── */
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--cream3);
+  border-radius: var(--r);
+  padding: 18px 20px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.stat-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--terra);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-label { font-size: 11px; color: var(--ink4); letter-spacing: .06em; text-transform: uppercase; }
+
+/* ─── FORM ─── */
+label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); display: block; margin-bottom: 6px; }
+input[type=text], textarea, select {
+  width: 100%;
+  background: var(--cream);
+  border: 1.5px solid var(--cream3);
+  border-radius: var(--r-sm);
+  padding: 12px 14px;
+  font-size: 15px;
+  font-family: 'Lato', sans-serif;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .18s;
+  -webkit-appearance: none;
+}
+input[type=text]:focus, textarea:focus, select:focus { border-color: var(--terra); background: var(--white); }
+textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+.form-group { margin-bottom: 18px; }
+
+/* ─── BADGES ─── */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+/* ─── SPREAD PLANNER ─── */
+.spread-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.spread-card {
+  aspect-ratio: 3/4;
+  border: 2px solid var(--cream3);
+  border-radius: 10px;
+  background: var(--white);
+  cursor: pointer;
+  transition: all .2s;
+  padding: 8px 7px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  min-height: 120px;
+}
+.spread-card:hover { border-color: var(--terra); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.spread-card.filled { border-color: var(--terra); }
+.spread-card.filled::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--terra); }
+.spread-card.section-giris { --accent: #2D5A1B; }
+.spread-card.section-gelisme1 { --accent: #8A6A00; }
+.spread-card.section-gelisme2 { --accent: #4A3580; }
+.spread-card.section-sonuc { --accent: #B85C2A; }
+.spread-card.filled.section-giris::before { background: var(--forest); }
+.spread-card.filled.section-gelisme1::before { background: var(--gold); }
+.spread-card.filled.section-gelisme2::before { background: var(--plum); }
+.spread-card.filled.section-sonuc::before { background: var(--terra); }
+.spread-num {
+  font-size: 9px;
+  font-weight: 900;
+  color: var(--ink4);
+  letter-spacing: .06em;
+  margin-bottom: 4px;
+}
+.spread-duygu {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink2);
+  line-height: 1.3;
+  flex: 1;
+}
+.spread-eylem {
+  font-size: 10px;
+  color: var(--ink4);
+  line-height: 1.3;
+  margin-top: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.spread-section-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.spread-section-tag {
+  flex: 1;
+  text-align: center;
+  padding: 6px 0;
+  border-radius: var(--r-sm);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+/* ─── ACCORDION ─── */
+.acc { border: 1px solid var(--cream3); border-radius: var(--r-sm); margin-bottom: 8px; overflow: hidden; }
+.acc-header {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  background: var(--white);
+  user-select: none;
+  transition: background .15s;
+}
+.acc-header:hover { background: var(--cream); }
+.acc-arrow { margin-left: auto; font-size: 12px; color: var(--ink4); transition: transform .2s; }
+.acc.open .acc-arrow { transform: rotate(180deg); }
+.acc-body { display: none; padding: 0 16px 16px; background: var(--white); border-top: 1px solid var(--cream2); }
+.acc.open .acc-body { display: block; padding-top: 14px; }
+
+/* ─── YAZMA WIZARD ─── */
+.wizard-steps {
+  display: flex;
+  gap: 0;
+  margin-bottom: 24px;
+  border-radius: var(--r);
+  overflow: hidden;
+  border: 1px solid var(--cream3);
+}
+.wizard-step {
+  flex: 1;
+  text-align: center;
+  padding: 12px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--ink4);
+  background: var(--white);
+  border-right: 1px solid var(--cream3);
+  cursor: pointer;
+  transition: all .18s;
+}
+.wizard-step:last-child { border-right: none; }
+.wizard-step.active { background: var(--terra); color: white; }
+.wizard-step.done { background: var(--forest-bg); color: var(--forest); }
+.wizard-content { display: none; }
+.wizard-content.active { display: block; }
+
+/* ─── CHOICE GRID ─── */
+.choice-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.choice-card {
+  border: 2px solid var(--cream3);
+  border-radius: var(--r-sm);
+  padding: 14px 12px;
+  cursor: pointer;
+  transition: all .18s;
+  background: var(--white);
+  text-align: center;
+}
+.choice-card:hover { border-color: var(--terra); background: var(--terra-bg); }
+.choice-card.selected { border-color: var(--terra); background: var(--terra-bg); }
+.choice-card .choice-icon { font-size: 24px; margin-bottom: 7px; }
+.choice-card .choice-name { font-size: 12px; font-weight: 700; color: var(--ink2); }
+.choice-card .choice-desc { font-size: 10px; color: var(--ink4); margin-top: 3px; line-height: 1.4; }
+
+/* ─── TEKNIK CARDS ─── */
+.teknik-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+.teknik-card {
+  border: 2px solid var(--cream3);
+  border-radius: var(--r-sm);
+  padding: 14px;
+  cursor: pointer;
+  transition: all .18s;
+  background: var(--white);
+}
+.teknik-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.teknik-card.selected { border-color: var(--terra); }
+.teknik-num {
+  font-size: 10px;
+  font-weight: 900;
+  color: var(--ink4);
+  letter-spacing: .1em;
+}
+.teknik-name { font-size: 13px; font-weight: 700; color: var(--ink); margin: 4px 0; }
+.teknik-rule { font-size: 10px; color: var(--ink4); line-height: 1.4; }
+
+/* ─── WEAK/STRONG ─── */
+.ws { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.ws-w { background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: var(--r-sm); padding: 12px; }
+.ws-s { background: var(--forest-bg); border: 1px solid #86EFAC; border-radius: var(--r-sm); padding: 12px; }
+.ws-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; display: block; }
+.ws-text { font-size: 13px; line-height: 1.6; color: var(--ink2); font-style: italic; }
+
+/* ─── INFO BOX ─── */
+.info { border-radius: var(--r-sm); padding: 12px 14px; font-size: 13px; line-height: 1.6; margin-bottom: 12px; }
+.info-terra { background: var(--terra-bg); border-left: 3px solid var(--terra); color: var(--terra2); }
+.info-forest { background: var(--forest-bg); border-left: 3px solid var(--forest); color: var(--forest); }
+.info-plum { background: var(--plum-bg); border-left: 3px solid var(--plum); color: var(--plum); }
+.info-gold { background: var(--gold-bg); border-left: 3px solid var(--gold); color: var(--gold); }
+
+/* ─── SAHNE KARTLARI ─── */
+.scene-card {
+  background: var(--white);
+  border: 1px solid var(--cream3);
+  border-radius: var(--r);
+  padding: 20px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all .18s;
+  box-shadow: var(--shadow);
+}
+.scene-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.scene-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.scene-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  color: var(--ink);
+  line-height: 1.7;
+  font-style: italic;
+}
+.scene-meta { font-size: 11px; color: var(--ink4); margin-top: 10px; }
+
+/* ─── CHECKLIST ─── */
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--cream2);
+  cursor: pointer;
+}
+.check-item:last-child { border-bottom: none; }
+.check-box {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--cream3);
+  border-radius: 6px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .18s;
+  margin-top: 1px;
+}
+.check-item.checked .check-box {
+  background: var(--forest);
+  border-color: var(--forest);
+  color: white;
+}
+.check-item.checked .check-text { color: var(--ink4); text-decoration: line-through; }
+.check-text { font-size: 14px; color: var(--ink2); line-height: 1.5; }
+
+/* ─── KOACH CHAT ─── */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  -webkit-overflow-scrolling: touch;
+  max-height: 400px;
+}
+.msg { display: flex; gap: 10px; align-items: flex-start; }
+.msg.user { flex-direction: row-reverse; }
+.msg-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  background: var(--cream2);
+}
+.msg.user .msg-avatar { background: var(--terra-bg); }
+.msg-bubble {
+  max-width: 75%;
+  background: var(--white);
+  border: 1px solid var(--cream3);
+  border-radius: 14px 14px 14px 4px;
+  padding: 11px 14px;
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.6;
+  box-shadow: var(--shadow);
+}
+.msg.user .msg-bubble {
+  background: var(--terra);
+  border-color: var(--terra2);
+  color: white;
+  border-radius: 14px 14px 4px 14px;
+}
+.chat-input-row {
+  display: flex;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--cream3);
+}
+.chat-input-row input { flex: 1; }
+.quick-btns { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+.quick-btn {
+  padding: 6px 13px;
+  border: 1.5px solid var(--cream3);
+  border-radius: 20px;
+  background: var(--white);
+  font-size: 12px;
+  color: var(--ink3);
+  cursor: pointer;
+  transition: all .15s;
+}
+.quick-btn:hover { border-color: var(--terra); color: var(--terra); background: var(--terra-bg); }
+
+/* ─── API KEY ─── */
+.api-notice {
+  background: var(--gold-bg);
+  border: 1px solid rgba(138,106,0,.2);
+  border-radius: var(--r-sm);
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+/* ─── MODAL ─── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(28,24,20,.6);
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 28px;
+  max-width: 640px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(28,24,20,.3);
+  animation: modalIn .22s ease;
+}
+@keyframes modalIn { from { opacity: 0; transform: scale(.95) translateY(10px); } to { opacity: 1; transform: none; } }
+.modal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.modal-close {
+  float: right;
+  background: var(--cream2);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s;
+}
+.modal-close:hover { background: var(--cream3); }
+
+/* ─── PROGRESS ─── */
+.progress-track { height: 6px; background: var(--cream3); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--forest), #5DA342); border-radius: 3px; transition: width .6s ease; }
+
+/* ─── PAGE HEADER ─── */
+.page-hero {
+  background: var(--ink);
+  border-radius: var(--r);
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  background: var(--terra);
+  border-radius: 50%;
+  opacity: .06;
+}
+.page-hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.page-hero-sub { font-size: 14px; color: #888; line-height: 1.5; }
+
+/* ─── TEMA GRID ─── */
+.tema-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+.tema-card {
+  border: 2px solid var(--cream3);
+  border-radius: var(--r-sm);
+  padding: 16px 14px;
+  cursor: pointer;
+  transition: all .18s;
+  background: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+.tema-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+.tema-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.tema-card.selected { border-color: currentColor; }
+.tema-icon { font-size: 22px; margin-bottom: 8px; }
+.tema-name { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+.tema-alts { font-size: 10px; color: var(--ink4); line-height: 1.4; }
+
+/* ─── DIVIDER ─── */
+.divider { height: 1px; background: var(--cream3); margin: 20px 0; }
+
+/* ─── LIST ─── */
+.list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--cream2);
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.5;
+}
+.list-item:last-child { border-bottom: none; }
+.list-dot { color: var(--terra); flex-shrink: 0; font-weight: 700; margin-top: 2px; }
+
+/* ─── SPREAD DETAIL MODAL ─── */
+.spread-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+</style>
+</head>
+<body>
+<div id="shell">
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="sb-brand">
+    <div class="sb-brand-title">Kitap<br>Atölyesi</div>
+    <div class="sb-brand-sub">Resimli Kitap Yazarlığı</div>
+  </div>
+
+  <div class="sb-book-info" id="sb-book-display">
+    <div class="sb-book-tag">Kitabınız</div>
+    <div class="sb-book-name" id="sb-book-name-display">Henüz başlık girilmedi</div>
+  </div>
+
+  <div class="sb-nav">
+    <div class="sb-section-label">Çalışma Alanı</div>
+    <div class="nav-item active" onclick="nav('ana')">
+      <div class="nav-icon">📖</div>
+      <span class="nav-label">Ana Sayfa</span>
+    </div>
+    <div class="nav-item" onclick="nav('storymap')">
+      <div class="nav-icon">🗺️</div>
+      <span class="nav-label">Story Map</span>
+      <span class="nav-badge" id="nb-spread">0/14</span>
+    </div>
+    <div class="nav-item" onclick="nav('yaz')">
+      <div class="nav-icon">✍️</div>
+      <span class="nav-label">Sahne Yaz</span>
+    </div>
+    <div class="nav-item" onclick="nav('sahneler')">
+      <div class="nav-icon">📚</div>
+      <span class="nav-label">Sahnelerim</span>
+      <span class="nav-badge" id="nb-sahne">0</span>
+    </div>
+    <div class="nav-item" onclick="nav('kontrol')">
+      <div class="nav-icon">✅</div>
+      <span class="nav-label">Kontrol Listesi</span>
+      <span class="nav-badge" id="nb-check">0/24</span>
+    </div>
+    <div class="nav-item" onclick="nav('koc')">
+      <div class="nav-icon">🤖</div>
+      <span class="nav-label">AI Koç</span>
+    </div>
+
+    <div class="sb-section-label">Rehber</div>
+    <div class="nav-item" onclick="nav('r-yas')">
+      <div class="nav-icon">👶</div>
+      <span class="nav-label">Yaş Grubu</span>
+    </div>
+    <div class="nav-item" onclick="nav('r-tema')">
+      <div class="nav-icon">🌱</div>
+      <span class="nav-label">Temalar</span>
+    </div>
+    <div class="nav-item" onclick="nav('r-yapi')">
+      <div class="nav-icon">🏗️</div>
+      <span class="nav-label">Yapı & Spread</span>
+    </div>
+    <div class="nav-item" onclick="nav('r-dil')">
+      <div class="nav-icon">🔤</div>
+      <span class="nav-label">Dil & Cümle</span>
+    </div>
+    <div class="nav-item" onclick="nav('r-gorsel')">
+      <div class="nav-icon">🎨</div>
+      <span class="nav-label">Görsel İlişki</span>
+    </div>
+    <div class="nav-item" onclick="nav('r-teknik')">
+      <div class="nav-icon">⚡</div>
+      <span class="nav-label">7 Teknik</span>
+    </div>
+    <div class="nav-item" onclick="nav('r-surec')">
+      <div class="nav-icon">🛤️</div>
+      <span class="nav-label">Yazma Süreci</span>
+    </div>
+  </div>
+
+  <div class="sb-bottom">
+    <div class="sb-kelime-bar">
+      <div class="sb-kw-row">
+        <span class="sb-kw-label">Kelime Sayısı</span>
+        <span class="sb-kw-val" id="sb-kelime">0</span>
+      </div>
+      <div class="sb-bar-track">
+        <div class="sb-bar-fill" id="sb-bar" style="width:0%"></div>
+      </div>
+      <div style="font-size:10px;color:#444;margin-top:6px;">Hedef: 300–1000 kelime</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+  <div id="topbar">
+    <div>
+      <div class="topbar-title" id="topbar-title">Ana Sayfa</div>
+      <div class="topbar-sub" id="topbar-sub">Kitabınızı buradan yönetin</div>
+    </div>
+    <div id="topbar-actions"></div>
+  </div>
+
+  <div id="content">
+
+    <!-- ANA SAYFA -->
+    <div class="screen active" id="screen-ana">
+      <div class="page-hero">
+        <div class="page-hero-title">Resimli Kitabınıza<br>Hoş Geldiniz</div>
+        <div class="page-hero-sub">Her büyük kitap, küçük bir kararla başlar. <br>Bugün ne yazmak istiyorsunuz?</div>
+      </div>
+
+      <div class="g2" style="margin-bottom:16px">
+        <div class="card">
+          <div class="card-title">Kitap Bilgileri</div>
+          <div class="form-group">
+            <label>Kitabın Adı</label>
+            <input type="text" id="kitap-adi" placeholder="Henüz adı yok…" oninput="saveKitap()">
+          </div>
+          <div class="form-group">
+            <label>Ana Karakter</label>
+            <input type="text" id="kitap-karakter" placeholder="Kim bu hikâyeyi yaşıyor?" oninput="saveKitap()">
+          </div>
+          <div class="form-group">
+            <label>Karakterin Yarası / İçsel Çatışması</label>
+            <input type="text" id="kitap-yara" placeholder="Neyi eksik, neyi kırık, neyden korkuyor?" oninput="saveKitap()">
+          </div>
+          <div class="form-group">
+            <label>Sembol / Nesne</label>
+            <input type="text" id="kitap-sembol" placeholder="Hikâyenin ikinci dili olan nesne" oninput="saveKitap()">
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Tek Cümle Testi</div>
+          <div class="info info-terra" style="font-size:13px">
+            <b>[Karakter]</b>, [isteği] ister; ama [engel] vardır; ta ki [dönüşüm] olana kadar.
+          </div>
+          <div class="form-group">
+            <label>Tek Cümleniz</label>
+            <textarea id="tek-cumle" rows="3" placeholder="Örn: Noi yalnızdır; bir balina bulur; onu sevmek ister; ama onu bırakmak gerektiğini anlar." oninput="saveKitap()"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Son Görsel (Kapanış İmgesi)</label>
+            <input type="text" id="son-gorsel" placeholder="Hikâye biterken zihinlerde kalacak tek görüntü?" oninput="saveKitap()">
+          </div>
+          <div class="form-group">
+            <label>Duygusal Soru</label>
+            <input type="text" id="duygusal-soru" placeholder="Bu kitap okuyucuda hangi duyguyu bırakacak?" oninput="saveKitap()">
+          </div>
+        </div>
+      </div>
+
+      <div class="g4" style="margin-bottom:16px">
+        <div class="stat-card">
+          <div class="stat-val" id="stat-spread">0</div>
+          <div class="stat-label">Spread Planlandı</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="stat-sahne">0</div>
+          <div class="stat-label">Sahne Yazıldı</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="stat-kelime">0</div>
+          <div class="stat-label">Toplam Kelime</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="stat-check">0</div>
+          <div class="stat-label">Kontrol ✓</div>
+        </div>
+      </div>
+
+      <div class="g3">
+        <div class="card" style="cursor:pointer" onclick="nav('storymap')">
+          <div style="font-size:28px;margin-bottom:8px">🗺️</div>
+          <div class="card-title" style="font-size:17px">Story Map</div>
+          <div style="font-size:13px;color:var(--ink4)">14 spread planını oluştur, duygusal ritmi gör</div>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="nav('yaz')">
+          <div style="font-size:28px;margin-bottom:8px">✍️</div>
+          <div class="card-title" style="font-size:17px">Sahne Yaz</div>
+          <div style="font-size:13px;color:var(--ink4)">Tema, tarz, teknik seçerek sahne oluştur</div>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="nav('kontrol')">
+          <div style="font-size:28px;margin-bottom:8px">✅</div>
+          <div class="card-title" style="font-size:17px">Kontrol Listesi</div>
+          <div style="font-size:13px;color:var(--ink4)">24 madde, yayına hazır olduğunuzu doğrula</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STORY MAP -->
+    <div class="screen" id="screen-storymap">
+      <div class="spread-section-bar">
+        <div class="spread-section-tag" style="background:var(--forest-bg);color:var(--forest)">1–3 · Giriş</div>
+        <div class="spread-section-tag" style="background:var(--gold-bg);color:var(--gold)">4–7 · Gelişme I</div>
+        <div class="spread-section-tag" style="background:var(--plum-bg);color:var(--plum)">8–11 · Gelişme II</div>
+        <div class="spread-section-tag" style="background:var(--terra-bg);color:var(--terra)">12–14 · Sonuç</div>
+      </div>
+
+      <div class="spread-grid" id="spread-grid"></div>
+
+      <div class="card">
+        <div class="card-title">Duygusal Ritim</div>
+        <div class="card-sub">14 spreadin duygusal fonksiyon kelimelerini sırayla okuyun — bir yükseliş ve iniş hissedebilmelisiniz.</div>
+        <div id="ritim-display" style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--ink3);font-style:italic;line-height:2">
+          Henüz spread planlanmadı…
+        </div>
+      </div>
+    </div>
+
+    <!-- SAHNE YAZ -->
+    <div class="screen" id="screen-yaz">
+      <div class="wizard-steps">
+        <div class="wizard-step active" id="ws1" onclick="goWizard(1)">1. Tema</div>
+        <div class="wizard-step" id="ws2" onclick="goWizard(2)">2. Tarz</div>
+        <div class="wizard-step" id="ws3" onclick="goWizard(3)">3. Teknik</div>
+        <div class="wizard-step" id="ws4" onclick="goWizard(4)">4. Yaz</div>
+        <div class="wizard-step" id="ws5" onclick="goWizard(5)">5. Kaydet</div>
+      </div>
+
+      <!-- Step 1: Tema -->
+      <div class="wizard-content active" id="wc1">
+        <div class="card-title" style="margin-bottom:14px">Hangi temayı işlemek istiyorsunuz?</div>
+        <div class="tema-grid" id="tema-grid"></div>
+      </div>
+
+      <!-- Step 2: Tarz -->
+      <div class="wizard-content" id="wc2">
+        <div class="card-title" style="margin-bottom:14px">Yazı tarzınızı seçin</div>
+        <div class="choice-grid" id="tarz-grid"></div>
+      </div>
+
+      <!-- Step 3: Teknik -->
+      <div class="wizard-content" id="wc3">
+        <div class="card-title" style="margin-bottom:14px">Anlatı tekniğini seçin</div>
+        <div class="teknik-grid" id="teknik-grid"></div>
+      </div>
+
+      <!-- Step 4: Yaz -->
+      <div class="wizard-content" id="wc4">
+        <div class="g2">
+          <div>
+            <div class="card-title">Sahne Soruları</div>
+            <div class="form-group">
+              <label>Bu sahne nerede geçiyor?</label>
+              <input type="text" id="q-mekan" placeholder="Mekân, atmosfer, zaman">
+            </div>
+            <div class="form-group">
+              <label>Karakterin yaptığı somut eylem</label>
+              <input type="text" id="q-eylem" placeholder="Ne yapıyor?">
+            </div>
+            <div class="form-group">
+              <label>Bu spreadin duygusal fonksiyonu</label>
+              <input type="text" id="q-duygu" placeholder="Tek kelimeyle (merak, korku, hüzün…)">
+            </div>
+            <div class="form-group">
+              <label>Sembol / nesne</label>
+              <input type="text" id="q-sembol" placeholder="Sahnede anlam taşıyan nesne">
+            </div>
+            <button class="btn btn-primary" onclick="generateText()" style="width:100%">✦ Metin Öner</button>
+          </div>
+          <div>
+            <div class="card-title">Sahne Metni</div>
+            <textarea id="sahne-metin" rows="8" placeholder="Yukarıdaki soruları doldurup 'Metin Öner'e tıklayın, ya da direkt buraya yazın…"></textarea>
+            <div class="form-group" style="margin-top:12px">
+              <label>Görsel Notu (İllüstratöre)</label>
+              <textarea id="sahne-gorsel" rows="3" placeholder="Bu spreadin görselinde ne görmek istersiniz?"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5: Kaydet -->
+      <div class="wizard-content" id="wc5">
+        <div class="card">
+          <div class="card-title">Sahnenizi Kaydedin</div>
+          <div class="form-group">
+            <label>Sahne Başlığı</label>
+            <input type="text" id="sahne-baslik" placeholder="Bu sahneye bir isim verin">
+          </div>
+          <div class="form-group">
+            <label>Hangi Spread? (1–14)</label>
+            <input type="text" id="sahne-spread" placeholder="Örn: 3">
+          </div>
+          <div id="sahne-preview" style="background:var(--cream);border-radius:var(--r-sm);padding:16px;margin-bottom:16px;font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--ink);line-height:1.7;min-height:80px"></div>
+          <button class="btn btn-primary" onclick="saveSahne()" style="width:100%">💾 Sahneyi Kaydet</button>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:20px">
+        <button class="btn btn-ghost" onclick="prevWizard()" id="btn-prev" style="display:none">← Geri</button>
+        <button class="btn btn-primary" onclick="nextWizard()" id="btn-next">Devam →</button>
+      </div>
+    </div>
+
+    <!-- SAHNELERİM -->
+    <div class="screen" id="screen-sahneler">
+      <div id="sahneler-list">
+        <div style="text-align:center;padding:60px 20px;color:var(--ink4)">
+          <div style="font-size:48px;margin-bottom:12px">📝</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:8px">Henüz sahne yok</div>
+          <div style="font-size:14px">Sahne Yaz menüsünden ilk sahnenizi oluşturun</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KONTROL LİSTESİ -->
+    <div class="screen" id="screen-kontrol">
+      <div class="card" style="margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div class="card-title" style="margin-bottom:0">Genel İlerleme</div>
+          <div style="font-size:22px;font-weight:900;color:var(--terra)" id="check-pct">%0</div>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="check-progress" style="width:0%"></div></div>
+        <div style="font-size:12px;color:var(--ink4);margin-top:8px" id="check-count-text">0 / 24 madde tamamlandı</div>
+      </div>
+
+      <div class="g2">
+        <div id="cl-col1"></div>
+        <div id="cl-col2"></div>
+      </div>
+    </div>
+
+    <!-- AI KOÇ -->
+    <div class="screen" id="screen-koc">
+      <div class="api-notice" id="api-notice">
+        <b>💡 Claude API</b> — Gerçek AI koçluk için Anthropic API anahtarınızı Ayarlar'a girin. Şu an örnek yanıtlar gösteriliyor.
+        <div style="margin-top:8px">
+          <label style="margin-bottom:4px">API Anahtarı</label>
+          <input type="text" id="api-key-input" placeholder="sk-ant-..." oninput="saveApiKey()">
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Yazarlık Koçunuz</div>
+        <div class="quick-btns">
+          <div class="quick-btn" onclick="askCoach('Sahne metnimi kontrol eder misin?')">📝 Metin kontrol</div>
+          <div class="quick-btn" onclick="askCoach('Karakterim yeterince derinleşti mi?')">🎭 Karakter derinliği</div>
+          <div class="quick-btn" onclick="askCoach('Duygu sıfatı kullandım mı?')">🔍 Dil analizi</div>
+          <div class="quick-btn" onclick="askCoach('Sonuma bakar mısın?')">🏁 Son değerlendirme</div>
+          <div class="quick-btn" onclick="askCoach('Hangi tekniği daha iyi kullanabilirim?')">⚡ Teknik önerisi</div>
+          <div class="quick-btn" onclick="askCoach('Görsel-metin ilişkim doğru mu?')">🎨 Görsel uyum</div>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+          <div class="msg">
+            <div class="msg-avatar">🤖</div>
+            <div class="msg-bubble">Merhaba! Ben yazarlık koçunuzum. Sahnenizle ilgili soru sorabilir, metin paylaşabilir, teknik danışabilirsiniz. Size nasıl yardımcı olabilirim?</div>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="Bir sahne paylaşın veya soru sorun…" onkeydown="if(event.key==='Enter')sendChat()">
+          <button class="btn btn-primary" onclick="sendChat()">Gönder</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- REHBER: YAŞ GRUBU -->
+    <div class="screen" id="screen-r-yas">
+      <div class="page-hero">
+        <div class="page-hero-title">4–6 Yaş Grubunu Tanımak</div>
+        <div class="page-hero-sub">Okuyucunuzu tanımadan kitap yazamazsınız</div>
+      </div>
+      <div class="g3" style="margin-bottom:16px">
+        <div class="card card-forest">
+          <div style="font-size:22px;margin-bottom:8px">🧠</div>
+          <div class="card-title" style="font-size:17px">Bilişsel</div>
+          <div class="list-item"><div class="list-dot">▸</div>Mantıksal düşünme henüz gelişmekte</div>
+          <div class="list-item"><div class="list-dot">▸</div>Neden-sonuç ilişkisi kısmen kurulabiliyor</div>
+          <div class="list-item"><div class="list-dot">▸</div>An'da yaşayan zihin — geçmiş/gelecek soyuttur</div>
+          <div class="list-item"><div class="list-dot">▸</div>Somut örnekler gerçekliği çapalar</div>
+        </div>
+        <div class="card card-terra">
+          <div style="font-size:22px;margin-bottom:8px">❤️</div>
+          <div class="card-title" style="font-size:17px">Duygusal</div>
+          <div class="list-item"><div class="list-dot">▸</div>Duygusal yoğunluk yüksek, düzenleme kapasitesi düşük</div>
+          <div class="list-item"><div class="list-dot">▸</div>Empati filizleniyor ama henüz tam değil</div>
+          <div class="list-item"><div class="list-dot">▸</div>Kendi duygularını adlandırmayı öğreniyor</div>
+          <div class="list-item"><div class="list-dot">▸</div>Büyük duygular (öfke, korku) ezici gelebilir</div>
+        </div>
+        <div class="card">
+          <div style="font-size:22px;margin-bottom:8px">💬</div>
+          <div class="card-title" style="font-size:17px">Dilsel</div>
+          <div class="list-item"><div class="list-dot">▸</div>Yaklaşık 2.000–5.000 aktif kelime</div>
+          <div class="list-item"><div class="list-dot">▸</div>Basit ve bileşik cümle yapıları</div>
+          <div class="list-item"><div class="list-dot">▸</div>Kafiye ve ritim büyük zevk veriyor</div>
+          <div class="list-item"><div class="list-dot">▸</div>Tekrar hem öğretir hem güvenlik hissi yaratır</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Kitap Yazımına Etkileri</div>
+        <div class="list-item"><div class="list-dot">▸</div>Dikkat süresi 10–15 dakikadır — kitap bu süreye sığmalıdır (500–1000 kelime)</div>
+        <div class="list-item"><div class="list-dot">▸</div>Tek bir ana fikir taşıyabilirler; birden fazla mesaj okuyucuyu kaybeder</div>
+        <div class="list-item"><div class="list-dot">▸</div>Somut karakterler ve durumlar soyut kavramları kapıya taşır</div>
+        <div class="list-item"><div class="list-dot">▸</div>Tekrar sinir bozucu değil, zevklidir — kalıplar, nakarat cümleler işe yarar</div>
+        <div class="list-item"><div class="list-dot">▸</div>Açık uçlu sorular aktif katılım sağlar: 'Peki sence ne olur?'</div>
+        <div class="list-item"><div class="list-dot">▸</div>Korkular gerçektir — karanlık, yalnız kalmak, kaybolmak ciddiye alınmalı</div>
+        <div class="list-item"><div class="list-dot">▸</div>Görsel okuryazarlık bu yaşta sözel okuryazarlığın önündedir</div>
+      </div>
+      <div class="info info-terra">
+        <b>⚠️ Sık Yapılan Hata:</b> 4–6 yaş çocuklar karmaşık duyguları hisseder. Ölüm, ayrılık, korku — bunları 'koruyarak' atlamak okuyucuyu kitaptan koparır. Yetişkin ahlakı değil, çocuk gerçekliği — ne öğreneceğini değil, <b>ne hissedeceğini</b> düşünün.
+      </div>
+    </div>
+
+    <!-- REHBER: TEMA -->
+    <div class="screen" id="screen-r-tema">
+      <div class="page-hero">
+        <div class="page-hero-title">Temalar: Genel'den Özele</div>
+        <div class="page-hero-sub">Temayı bulmak yeterli değil — derinlemesine inmek gerekir</div>
+      </div>
+      <div class="g2" style="margin-bottom:16px">
+        <div class="card"><div class="card-title">Duygusal Dünya</div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Korku:</b> karanlık, yalnız kalmak, kaybolmak, yeni yer</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Öfke:</b> hayal kırıklığı, haksızlık, bırakmak zorunda kalmak</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Üzüntü ve yas:</b> kayıp, ayrılık, sona ermek</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Kıskançlık:</b> yeni kardeş, arkadaşın oyuncağı, dikkat isteme</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Utanma:</b> hata yapma, gülünç düşme, farklı olmak</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Hayranlık:</b> ilk kez görmek, anlamak, keşfetmek</div></div>
+        </div>
+        <div class="card"><div class="card-title">Kimlik & Büyüme</div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Ben kimim:</b> özellikler, güçler, korkular</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Farklı olmak:</b> fiziksel, kültürel, kişisel</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>İlk kez:</b> okul, karanlıkta uyumak, yüzmek</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Hatalar ve affetmek:</b> kendini ve başkalarını</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Büyümek:</b> eski şeyleri bırakmak, yenisine açılmak</div></div>
+        </div>
+        <div class="card"><div class="card-title">İlişkiler</div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Ebeveyn:</b> sevgi, ayrılık, meşguliyet, güvenlik</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Kardeş:</b> çatışma, kıskançlık, uzlaşma, bağ</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Büyükanne/baba:</b> köprü nesil, bellek, yas</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Arkadaşlık:</b> kurmak, kırmak, tamir etmek</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Evcil hayvan:</b> sorumluluk, sevgi, kayıp</div></div>
+        </div>
+        <div class="card"><div class="card-title">Değerler & Dünya</div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Paylaşmak:</b> soyut değil, eylemde</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Cesaret:</b> doğruyu söylemek zordur</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Merak:</b> soru sormak, keşfetmek</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Doğa:</b> mevsimler, canlılar, büyüklük</div></div>
+          <div class="list-item"><div class="list-dot">▸</div><div><b>Çeşitlilik:</b> farklı aileler, renkler, diller</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">4 Katman Modeli — Örnek: KORKU</div>
+        <div class="info info-terra" style="margin-bottom:12px">Bir temayı seçmek kitabınızın sadece %10'unu oluşturur. Gerçek iş, dört katmanda işlemektir.</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+          <div style="background:var(--forest-bg);border-radius:var(--r-sm);padding:14px">
+            <div style="font-size:10px;font-weight:700;color:var(--forest);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px">Katman 1</div>
+            <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px">Evrensel gerçek</div>
+            <div style="font-size:12px;color:var(--ink3)">Her çocuk korkar. Korku yanlış değildir.</div>
+          </div>
+          <div style="background:var(--gold-bg);border-radius:var(--r-sm);padding:14px">
+            <div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px">Katman 2</div>
+            <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px">Özgül durum</div>
+            <div style="font-size:12px;color:var(--ink3)">Karanlık mı, okul mu, yalnız kalmak mı?</div>
+          </div>
+          <div style="background:var(--plum-bg);border-radius:var(--r-sm);padding:14px">
+            <div style="font-size:10px;font-weight:700;color:var(--plum);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px">Katman 3</div>
+            <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px">Karakter filtresi</div>
+            <div style="font-size:12px;color:var(--ink3)">Bu korku bu karaktere nasıl hissettiriyor?</div>
+          </div>
+          <div style="background:var(--terra-bg);border-radius:var(--r-sm);padding:14px">
+            <div style="font-size:10px;font-weight:700;color:var(--terra);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px">Katman 4</div>
+            <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px">Özgün an</div>
+            <div style="font-size:12px;color:var(--ink3)">Tek, somut, görsel an nedir?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REHBER: YAPI -->
+    <div class="screen" id="screen-r-yapi">
+      <div class="page-hero">
+        <div class="page-hero-title">Yapı & 32 Sayfa Anatomisi</div>
+        <div class="page-hero-sub">Resimli kitap bir form — kısıtları yaratıcılığın hammaddesidir</div>
+      </div>
+      <div class="g2" style="margin-bottom:16px">
+        <div class="card">
+          <div class="card-title">32 Sayfa Anatomisi</div>
+          <div style="display:grid;gap:8px">
+            <div style="background:var(--cream);border-radius:var(--r-sm);padding:10px 14px;display:grid;grid-template-columns:80px 1fr;gap:8px;align-items:center">
+              <div style="font-size:11px;font-weight:700;color:var(--terra)">Sayfa 1–2</div>
+              <div style="font-size:12px;color:var(--ink3)">Kapak içi — hikâye öncesi atmosfer</div>
+            </div>
+            <div style="background:var(--cream);border-radius:var(--r-sm);padding:10px 14px;display:grid;grid-template-columns:80px 1fr;gap:8px;align-items:center">
+              <div style="font-size:11px;font-weight:700;color:var(--terra)">Sayfa 3–4</div>
+              <div style="font-size:12px;color:var(--ink3)">Başlık & telif sayfası</div>
+            </div>
+            <div style="background:var(--forest-bg);border-radius:var(--r-sm);padding:10px 14px;display:grid;grid-template-columns:80px 1fr;gap:8px;align-items:center">
+              <div style="font-size:11px;font-weight:700;color:var(--forest)">Sayfa 5–6</div>
+              <div style="font-size:12px;color:var(--ink3)">1. spread — hikâye başlangıcı</div>
+            </div>
+            <div style="background:var(--gold-bg);border-radius:var(--r-sm);padding:10px 14px;display:grid;grid-template-columns:80px 1fr;gap:8px;align-items:center">
+              <div style="font-size:11px;font-weight:700;color:var(--gold)">Sayfa 7–28</div>
+              <div style="font-size:12px;color:var(--ink3)">12 çift sayfa — hikâyenin gövdesi</div>
+            </div>
+            <div style="background:var(--terra-bg);border-radius:var(--r-sm);padding:10px 14px;display:grid;grid-template-columns:80px 1fr;gap:8px;align-items:center">
+              <div style="font-size:11px;font-weight:700;color:var(--terra)">Sayfa 29–30</div>
+              <div style="font-size:12px;color:var(--ink3)">Son çift sayfa — çözüm ve kapanış</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Sayısal Referanslar</div>
+          <div class="g2">
+            <div class="stat-card"><div class="stat-val" style="font-size:28px">300–1000</div><div class="stat-label">Toplam Kelime</div></div>
+            <div class="stat-card"><div class="stat-val" style="font-size:28px">35</div><div class="stat-label">Spread Başına Ort.</div></div>
+            <div class="stat-card"><div class="stat-val" style="font-size:28px">14</div><div class="stat-label">Anlatı Spreadi</div></div>
+            <div class="stat-card"><div class="stat-val" style="font-size:28px">1–3</div><div class="stat-label">Ana Karakter</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">14 Spread Dağılımı</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+          <div style="background:var(--forest-bg);border-radius:var(--r-sm);padding:16px">
+            <div style="font-size:10px;font-weight:700;color:var(--forest);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">1–3 · Giriş</div>
+            <div class="list-item" style="border-color:rgba(45,90,27,.15)"><div class="list-dot" style="color:var(--forest)">1</div>Dünya kurulur</div>
+            <div class="list-item" style="border-color:rgba(45,90,27,.15)"><div class="list-dot" style="color:var(--forest)">2</div>Karakter tanıtılır</div>
+            <div class="list-item" style="border-color:transparent"><div class="list-dot" style="color:var(--forest)">3</div>Yara hissettirilir</div>
+          </div>
+          <div style="background:var(--gold-bg);border-radius:var(--r-sm);padding:16px">
+            <div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">4–7 · Gelişme I</div>
+            <div style="font-size:12px;color:var(--ink3);line-height:1.6">Yeni unsur devreye girer. İlk girişim başarısız. Tempo hızlanır, merak yüklü.</div>
+          </div>
+          <div style="background:var(--plum-bg);border-radius:var(--r-sm);padding:16px">
+            <div style="font-size:10px;font-weight:700;color:var(--plum);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">8–11 · Gelişme II</div>
+            <div style="font-size:12px;color:var(--ink3);line-height:1.6">Sorun derinleşir. En zor karar. Duygusal doruk. Ağır, derin tempo.</div>
+          </div>
+          <div style="background:var(--terra-bg);border-radius:var(--r-sm);padding:16px">
+            <div style="font-size:10px;font-weight:700;color:var(--terra);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">12–14 · Sonuç</div>
+            <div class="list-item" style="border-color:rgba(184,92,42,.15)"><div class="list-dot">12</div>İniş anı</div>
+            <div class="list-item" style="border-color:rgba(184,92,42,.15)"><div class="list-dot">13</div>Dönüşüm</div>
+            <div class="list-item" style="border-color:transparent"><div class="list-dot">14</div>Açık kapı</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REHBER: DİL -->
+    <div class="screen" id="screen-r-dil">
+      <div class="page-hero">
+        <div class="page-hero-title">Dil: Kelimeler & Cümleler</div>
+        <div class="page-hero-sub">Az kelimeyle çok şey söylemek — resimli kitabın dilsel ustalığı</div>
+      </div>
+      <div class="g2" style="margin-bottom:16px">
+        <div class="card card-forest">
+          <div class="card-title">✓ Tercih Edin</div>
+          <div class="list-item"><div class="list-dot" style="color:var(--forest)">▸</div>Somut isimler: 'hayvan' değil 'tilki'</div>
+          <div class="list-item"><div class="list-dot" style="color:var(--forest)">▸</div>Eylem fiilleri: 'gitti' değil 'koştu/süründü/süzüldü'</div>
+          <div class="list-item"><div class="list-dot" style="color:var(--forest)">▸</div>Duyusal kelimeler: ıslaklık, tırmalamalık, yumuşaklık</div>
+          <div class="list-item"><div class="list-dot" style="color:var(--forest)">▸</div>Onomatopeler: fıssst, gürümbür, hışırdadı</div>
+          <div class="list-item"><div class="list-dot" style="color:var(--forest)">▸</div>Kafiyeli çiftler (gerektiğinde): ses dokusu yaratır</div>
+        </div>
+        <div class="card" style="border-color:rgba(239,68,68,.2);background:#FEF2F2">
+          <div class="card-title">✗ Kaçının</div>
+          <div class="list-item"><div class="list-dot" style="color:#DC2626">✗</div>Duygu sıfatları: üzgün, mutlu, korkmuş</div>
+          <div class="list-item"><div class="list-dot" style="color:#DC2626">✗</div>Belirsiz zamirler: 'o şey', 'bir yerlerde'</div>
+          <div class="list-item"><div class="list-dot" style="color:#DC2626">✗</div>Yetişkin soyutlamaları: anlam, değer, sorumluluk</div>
+          <div class="list-item"><div class="list-dot" style="color:#DC2626">✗</div>Açıklayan zarflar: 'çok güzel', 'gerçekten büyük'</div>
+          <div class="list-item"><div class="list-dot" style="color:#DC2626">✗</div>Edilgen yapılar: 'görüldü', 'yapıldı'</div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">Cümle Yapısı Referansı</div>
+        <div style="display:grid;gap:8px">
+          <div style="background:var(--cream);border-radius:var(--r-sm);padding:12px 14px;display:grid;grid-template-columns:140px 1fr;gap:8px">
+            <div style="font-size:11px;font-weight:700;color:var(--terra)">Ideal uzunluk</div>
+            <div style="font-size:13px;color:var(--ink3)">Spread başına 1–4 cümle, cümle başına 5–12 kelime</div>
+          </div>
+          <div style="background:var(--cream);border-radius:var(--r-sm);padding:12px 14px;display:grid;grid-template-columns:140px 1fr;gap:8px">
+            <div style="font-size:11px;font-weight:700;color:var(--terra)">Kısa cümle</div>
+            <div style="font-size:13px;color:var(--ink3);font-style:italic">'Durdu.' 'Baktı.' 'Hiçbir şey yoktu.'</div>
+          </div>
+          <div style="background:var(--cream);border-radius:var(--r-sm);padding:12px 14px;display:grid;grid-template-columns:140px 1fr;gap:8px">
+            <div style="font-size:11px;font-weight:700;color:var(--terra)">Tekrar yapısı</div>
+            <div style="font-size:13px;color:var(--ink3);font-style:italic">'Ve koştu. Ve koştu. Ve koştu.'</div>
+          </div>
+        </div>
+      </div>
+      <div class="ws">
+        <div class="ws-w">
+          <span class="ws-lbl" style="color:#DC2626">✗ Zayıf</span>
+          <p class="ws-text">Küçük kaplumbağa çok yavaş ilerliyordu ve diğer hayvanların hepsinin ondan çok daha hızlı olduğunu görünce kendini kötü hissetti.</p>
+        </div>
+        <div class="ws-s">
+          <span class="ws-lbl" style="color:var(--forest)">✓ Güçlü</span>
+          <p class="ws-text">Kaplumbağa yürüdü. Yavaş yavaş. Arkasında toz bulutu bırakmadan. Ama yürüdü.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- REHBER: GÖRSEL -->
+    <div class="screen" id="screen-r-gorsel">
+      <div class="page-hero">
+        <div class="page-hero-title">Metin – Görsel İlişkisi</div>
+        <div class="page-hero-sub">Resimli kitap iki sanat dalının diyalogudur</div>
+      </div>
+      <div class="info info-terra">
+        <b>Altın Kural:</b> Metin ne söylüyorsa görsel onu tekrar etmez. Biri söylüyorsa, diğeri farklı bir şey gösterir. Bu sayfanın taşıyabileceği bilgi miktarını ikiye katlar.
+      </div>
+      <div class="g3" style="margin-bottom:16px">
+        <div class="card"><div style="font-size:22px;margin-bottom:8px">↔️</div><div class="card-title" style="font-size:16px">Karşı Nokta</div><div style="font-size:13px;color:var(--ink3)">Metin bir kapı açar, görsel içeriden bakar. 'O gece sessiz geçti' → gözler açık, tavana bakıyor.</div></div>
+        <div class="card"><div style="font-size:22px;margin-bottom:8px">⏱️</div><div class="card-title" style="font-size:16px">Zaman Farkı</div><div style="font-size:13px;color:var(--ink3)">Metin geçmişi söyler, görsel şimdiyi gösterir. 'Her sabah çıkardı' → boş sandalye, soğumuş çay.</div></div>
+        <div class="card"><div style="font-size:22px;margin-bottom:8px">🪟</div><div class="card-title" style="font-size:16px">İç / Dış</div><div style="font-size:13px;color:var(--ink3)">Metin iç dünyayı verir, görsel dış dünyayı gösterir. Metin susarsa görsel yüzü, duruşu, ışığı taşır.</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">5 İlişki Modeli</div>
+        <div style="display:grid;gap:10px">
+          <div style="border-left:3px solid var(--terra);padding:12px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;background:var(--terra-bg)"><div style="font-size:12px;font-weight:700;color:var(--terra);margin-bottom:4px">Karşıt anlatım</div><div style="font-size:13px;color:var(--ink2)">Metin X der, görsel Y gösterir → En karmaşık, en zengin. İroni ve derinlik yaratır.</div></div>
+          <div style="border-left:3px solid var(--forest);padding:12px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;background:var(--forest-bg)"><div style="font-size:12px;font-weight:700;color:var(--forest);margin-bottom:4px">Tamamlayıcı anlatım</div><div style="font-size:13px;color:var(--ink2)">Metin yarısını söyler, görsel diğer yarısını gösterir → Aktif katılım, sürpriz.</div></div>
+          <div style="border-left:3px solid var(--gold);padding:12px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;background:var(--gold-bg)"><div style="font-size:12px;font-weight:700;color:var(--gold);margin-bottom:4px">Detay genişletme</div><div style="font-size:13px;color:var(--ink2)">Metin ana fikri söyler, görsel arka planı zenginleştirir → Birden fazla okuma katmanı.</div></div>
+          <div style="border-left:3px solid var(--plum);padding:12px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;background:var(--plum-bg)"><div style="font-size:12px;font-weight:700;color:var(--plum);margin-bottom:4px">Duygusal amplifikasyon</div><div style="font-size:13px;color:var(--ink2)">Metin nötr, görsel duygusal yükü taşır → İçten anlatım için ideal.</div></div>
+          <div style="border-left:3px solid var(--ink4);padding:12px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;background:var(--cream)"><div style="font-size:12px;font-weight:700;color:var(--ink3);margin-bottom:4px">Paralel anlatım</div><div style="font-size:13px;color:var(--ink2)">Her ikisi de aynı şeyi söyler → En basit model; küçük çocuklar ve ilk kitaplar için.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REHBER: 7 TEKNİK -->
+    <div class="screen" id="screen-r-teknik">
+      <div class="page-hero">
+        <div class="page-hero-title">7 Anlatı Tekniği</div>
+        <div class="page-hero-sub">Her teknik, hikâyenizi farklı bir boyuta taşır</div>
+      </div>
+      <div id="teknik-rehber-list"></div>
+    </div>
+
+    <!-- REHBER: SÜREÇ -->
+    <div class="screen" id="screen-r-surec">
+      <div class="page-hero">
+        <div class="page-hero-title">Yazarın Çalışma Süreci</div>
+        <div class="page-hero-sub">Fikirden bitmiş taslağa — adım adım pratik yol haritası</div>
+      </div>
+      <div id="surec-list"></div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+</div><!-- /shell -->
+
+<!-- SPREAD MODAL -->
+<div class="modal-overlay" id="spread-modal" onclick="if(event.target===this)closeSpreadModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeSpreadModal()">×</button>
+    <div class="modal-title" id="sm-title">Spread 1</div>
+    <div style="font-size:12px;color:var(--ink4);margin-bottom:18px" id="sm-section"></div>
+
+    <div class="spread-detail-grid">
+      <div class="form-group">
+        <label>Duygusal Fonksiyon (1 kelime)</label>
+        <input type="text" id="sm-duygu" placeholder="merak, korku, hüzün, umut…">
+      </div>
+      <div class="form-group">
+        <label>Karakter Eylemi</label>
+        <input type="text" id="sm-eylem" placeholder="Karakterin yaptığı somut şey">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Görsel İpucu (İllüstratöre)</label>
+      <input type="text" id="sm-gorsel" placeholder="Bu spread için en önemli görsel unsur">
+    </div>
+    <div class="form-group">
+      <label>Spread Metni</label>
+      <textarea id="sm-metin" rows="4" placeholder="Bu spread için yazdığınız metin…"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Bağlantı (Önceki → Bu → Sonraki)</label>
+      <input type="text" id="sm-baglanti" placeholder="Bu spread nasıl akar ve köprü kurar?">
+    </div>
+    <div style="display:flex;gap:10px;margin-top:6px">
+      <button class="btn btn-primary" onclick="saveSpread()" style="flex:1">Kaydet</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearSpread()">Temizle</button>
+    </div>
+  </div>
+</div>
+
+<!-- SAHNE DETAIL MODAL -->
+<div class="modal-overlay" id="scene-modal" onclick="if(event.target===this)closeSceneModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeSceneModal()">×</button>
+    <div class="modal-title" id="scm-title"></div>
+    <div id="scm-badges" style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0"></div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--ink);line-height:1.8;margin:14px 0;padding:16px;background:var(--cream);border-radius:var(--r-sm)" id="scm-metin"></div>
+    <div id="scm-gorsel" style="font-size:13px;color:var(--ink3);padding:12px 14px;background:var(--plum-bg);border-radius:var(--r-sm);margin-bottom:14px"></div>
+    <button class="btn btn-ghost btn-sm" onclick="deleteSahne()" style="color:#DC2626;border-color:#FCA5A5">Sahneyi Sil</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+let S = {
+  kitap: { adi:'', karakter:'', yara:'', sembol:'', tekCumle:'', sonGorsel:'', duygusalSoru:'' },
+  spreads: Array(14).fill(null).map((_,i)=>({ duygu:'', eylem:'', gorsel:'', metin:'', baglanti:'', filled:false })),
+  sahneler: [],
+  checks: {},
+  wizard: { step:1, tema:null, tarz:null, teknik:null },
+  apiKey: '',
+  currentSpread: null,
+  currentScene: null,
+};
+
+// Load from localStorage
+function load(){
+  try {
+    const d = localStorage.getItem('kitap_atolyesi_v3');
+    if(d) { const p=JSON.parse(d); Object.assign(S,p); }
+  } catch(e){}
+}
+function save(){
+  try { localStorage.setItem('kitap_atolyesi_v3', JSON.stringify(S)); } catch(e){}
+}
+
+// ═══════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════
+const TEMALAR = [
+  {id:'korku', icon:'😨', name:'Korku', color:'var(--plum)', alts:'karanlık · yalnız kalmak · kaybolmak · yeni yer'},
+  {id:'ofke', icon:'😤', name:'Öfke', color:'var(--terra)', alts:'hayal kırıklığı · haksızlık · bırakmak zorunda kalmak'},
+  {id:'uzuntu', icon:'😢', name:'Üzüntü & Yas', color:'#2A6BB0', alts:'kayıp · ayrılık · sona ermek'},
+  {id:'arkadas', icon:'🤝', name:'Arkadaşlık', color:'var(--forest)', alts:'kurmak · kırmak · tamir etmek'},
+  {id:'cesaret', icon:'🦁', name:'Cesaret', color:'var(--gold)', alts:'ilk kez · karanlığa girmek · doğruyu söylemek'},
+  {id:'buyume', icon:'🌱', name:'Büyümek', color:'#1A7A4A', alts:'eski şeyleri bırakmak · yenisine açılmak'},
+  {id:'farkli', icon:'🦋', name:'Farklı Olmak', color:'#8B2FC9', alts:'kabul · kimlik · kültürel farklılık'},
+  {id:'aile', icon:'🏠', name:'Aile & Sevgi', color:'#C4422A', alts:'ebeveyn · kardeş · büyükanne · bağ'},
+];
+
+const TARZLAR = [
+  {id:'minimal', icon:'◻', name:'Minimal', desc:'Az kelime, büyük boşluk'},
+  {id:'siirsel', icon:'✦', name:'Şiirsel', desc:'Ritim, ses, imgeler'},
+  {id:'ritmik', icon:'♩', name:'Ritmik', desc:'Tekrar, nakarat, kalıplar'},
+  {id:'gercekci', icon:'◉', name:'Gerçekçi', desc:'Sade, doğal, içten'},
+  {id:'fantastik', icon:'✺', name:'Fantastik', desc:'Büyülü, metaforik, dönüşüm'},
+];
+
+const TEKNIKLER = [
+  { no:'1', name:'Gösterme', ing:'Show Don\'t Tell', rule:'Duyguyu hareketle göster', color:'var(--terra)',
+    desc:'Duyguyu adlandırmak yerine onu gösteren bir eylem, nesne veya beden tepkisi kullanın.',
+    zayif:'Elif çok korktuydu. Karanlıktan gerçekten korkuyordu.',
+    guclu:'Elif kapıya kadar geldi. Durdu. Bir adım geri gitti. Işığı söndürmedi.',
+    ipucu:'Duygu sıfatı görüyorsanız (üzgün, mutlu, korkmuş) silin ve gösterin.' },
+  { no:'2', name:'İma Etme', ing:'Subtext', rule:'Asıl şeyi hiç yazma', color:'var(--plum)',
+    desc:'Söylenmeyenin gücü. Okuyucu satırlar arasında anlam çıkarır — çocuklar da bu keyfin tadını çıkarır.',
+    zayif:'Büyükannesini özlemişti çünkü çok onu seviyordu.',
+    guclu:'Büyükannenin boş koltuğuna oturdu. Bir süre bekledi. Kalktı.',
+    ipucu:'Cümleyi silin. Okuyucu yine de anlamalı. Anlıyorsa ima başarılı.' },
+  { no:'3', name:'Hissettirme', ing:'Emotional Immersion', rule:'Bedeni kullan', color:'var(--forest)',
+    desc:'Okuyucuyu karakterin bedeniyle hissettirmek. Fizyolojik tepkiler, duyusal ayrıntılar ve ritim değişiklikleri.',
+    zayif:'Heyecanlandı ve çok mutlu oldu.',
+    guclu:'Kalbi gümbür gümbür attı. Ayakları yerinde duramadı. Gülmek mi ağlamak mı — ikisi de geldi.',
+    ipucu:'Parmak → el → kol → omuz: duygu vücutta seyahat eder.' },
+  { no:'4', name:'Sembol', ing:'Metaphor & Symbol', rule:'Nesneye anlam yükle', color:'var(--gold)',
+    desc:'Soyut gerçekleri somut imgelerle taşımak. Bir nesne, bir mekân ya da eylem hikâyenin ikinci dili.',
+    zayif:'Balina sadece büyük bir hayvandı.',
+    guclu:'Balina = Noi\'nin ihtiyaç duyduğu bağ. Yırtılmış oyuncak = yıpranmış ama değerli sevgi.',
+    ipucu:'Sembol kitap boyunca tutarlı olmalı. Başta küçük, sonda dolu anlam taşısın.' },
+  { no:'5', name:'Tekrar & Ritim', ing:'Repetition', rule:'Kur, kur, kır', color:'#2A6BB0',
+    desc:'Okuyucu kalıbı öğrenince kitaba katılmaya başlar — bir sonraki satırı tahmin eder ve bu katılım zevklidir.',
+    zayif:'Her sayfada farklı bir cümle yapısı. Hiç tekrar yok.',
+    guclu:'Üçlü yapı, nakarat cümle, başlık kelimesinin sonda farklı bağlamda dönmesi.',
+    ipucu:'İlk spreadin cümlesi son spreada döndüğünde okuyucu bunun farkına varır.' },
+  { no:'6', name:'Açık Uçlu Son', ing:'Open Ending', rule:'Bir soru bırak', color:'#1A7A4A',
+    desc:'Kapıyı kapatmamak — okuyucuya hikâyenin devamını hayal ettirmek. Çocukları hikâyenin yaratıcısına dönüştürür.',
+    zayif:'Ve o günden sonra Efe artık hiç korkmadı. Her şey yoluna girmişti.',
+    guclu:'Efe o gece yine merdiven başında durdu. Bu sefer biraz daha uzun durdu. Sonra aşağı indi.',
+    ipucu:'Son cümle bir kapı açmalı, pencereyi değil. Okuyucu oradan çıkmalı.' },
+  { no:'7', name:'Anlatıcı Sesi', ing:'Point of View', rule:'Kim anlatıyor?', color:'#8B2FC9',
+    desc:'Kim anlatıyor, her şeyi değiştirir. Aynı sahne farklı sesle tamamen farklı bir hikâye olur.',
+    zayif:'Rastgele ses değişimleri. Tutarsız perspektif.',
+    guclu:'Üçüncü kişi: mesafe + empati. Birinci kişi: içtenlik. İkinci kişi: okuyucuyu içine çeker.',
+    ipucu:'Nesnenin sesi (oyuncak, ağaç, koltuk anlatır) — taze perspektif, büyük illüstrasyon özgürlüğü.' },
+];
+
+const CHECKLIST = {
+  'Yapı': [
+    'Toplam kelime sayısı 300–1000 arasında',
+    'Spread başına 1–4 cümle sağlanıyor',
+    '14 spread var ve her biri yerinde',
+    'Dikkat süresi (10–15 dk) gözetildi',
+    'Dil bu yaşa somut ve erişilebilir',
+    'Soyut kavramlar somutlaştırıldı',
+  ],
+  'Hikâye': [
+    'Tek cümlelik hikâye özeti var',
+    'Karakterin iç çatışması net',
+    'Giriş dünyayı ve yarayı kurdu',
+    'Gelişme duygusal gerilimi taşıdı',
+    'Sonuç açık bitti, kapanmadı',
+    'Ders verilmeden deneyim yaşatıldı',
+  ],
+  'Dil': [
+    'Duygu sıfatları silindi',
+    '\"Göster-söyleme\" uygulandı',
+    'Yüksek sesli okuma testinden geçti',
+    'Tekrar yapıları bilinçli',
+    'Her cümle gerekli',
+    'Açık uçlu son var',
+  ],
+  'Görsel': [
+    'Metin ve görsel aynı şeyi söylemiyor',
+    'Her spread için görsel potansiyel var',
+    'Art notlar sadece gerekli yerlerde',
+    'Sessiz spread(ler) tasarlandı',
+    'Renk/ışık arki düşünüldü',
+    'İllüstratöre yeterli alan bırakıldı',
+  ],
+};
+
+const SURECLER = [
+  { n:'1', title:'Fikri Bulmak & Doğrulamak', color:'var(--forest)',
+    items:['Bu fikir için içimde gerçek bir duygu var mı — yoksa \"iyi fikir\" gibi mi görünüyor?','Bu hikâyeyi 14 spreada anlatabileceğime inanıyor muyum?','Her spread için zihnimde bir görüntü beliriyor mu?','Bu kitabı 5 yaşında okusaydım bir şey hisseder miydim?','Tek cümleyle özetleyebiliyor muyum? (Hayırsa fikir hazır değil)'] },
+  { n:'2', title:'Spread Dökümü (Story Map)', color:'var(--terra)',
+    items:['Bir kâğıda 14 numaralı kutu çiz — her biri bir spread','Her kutucuğa: (1) duygusal fonksiyon kelimesi, (2) eylem, (3) görüntü yaz','Kelimeleri sırayla oku — bir yükseliş ve iniş hissedebilmelisin','Hissetmiyorsan yapıda sorun var, düzelt'] },
+  { n:'3', title:'Kirli Taslak', color:'var(--plum)',
+    items:['İlk taslakta kural tek: bitirmek. Düzeltmek, silmek yasak.','Bir oturuşta bitirmeye çalış (45–90 dk yeterlidir)','Bir cümle bile olsa her spreadi yaz','Kötü cümle boş cümleden iyidir — düzeltilebilir','Bitirir bitirmez 24–48 saat bekle, sonra oku'] },
+  { n:'4', title:'Revizyon Turları', color:'var(--gold)',
+    items:['1. Yapı turu: 14 spread var mı? Tempo doğru mu? Duygusal yay çalışıyor mu?','2. Karakter turu: Her spreada karakter tutarlı mı, ne hissediyor?','3. Dil turu: Fazla kelime? Duygu sıfatları? Her cümle gerekli mi?','4. Ses turu: Yüksek sesle oku. Tökezlediğin yer yanlış.','5. Görsel tur: Her spreadin görsel potansiyeli var mı?','6. Çocuk turu: Gerçek bir 4–6 yaş çocuğuna oku — tepkisini gözlemle'] },
+  { n:'5', title:'Geri Bildirim & Son Polisaj', color:'var(--ink3)',
+    items:['Bir çocuk okuyucudan geri bildirim al — sıkıldığı yer, tekrar istediği yer','Farklı yaşlarda iki ebeveyn veya öğretmenden görüş al','Yazarlık grubuna getir — teknik geri bildirim için','Son polisajda sadece dil kalitesine odaklan — yapıyı artık değiştirme'] },
+];
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+function init(){
+  load();
+  restoreKitapForm();
+  buildSpreadGrid();
+  buildChecklist();
+  buildTemaGrid();
+  buildTarzGrid();
+  buildTeknikGrid();
+  buildTeknikRehber();
+  buildSurecList();
+  renderSahneler();
+  updateStats();
+  updateSidebar();
+}
+
+function restoreKitapForm(){
+  const k = S.kitap;
+  const fields = { 'kitap-adi':'adi','kitap-karakter':'karakter','kitap-yara':'yara','kitap-sembol':'sembol','tek-cumle':'tekCumle','son-gorsel':'sonGorsel','duygusal-soru':'duygusalSoru' };
+  Object.entries(fields).forEach(([id,key])=>{ const el=document.getElementById(id); if(el) el.value=k[key]||''; });
+  if(S.apiKey){ const el=document.getElementById('api-key-input'); if(el) el.value=S.apiKey; }
+}
+
+// ═══════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════
+const SCREEN_MAP = {
+  'ana': { id:'screen-ana', title:'Ana Sayfa', sub:'Kitabınızı buradan yönetin' },
+  'storymap': { id:'screen-storymap', title:'Story Map', sub:'14 spread planı — duygusal ritmi gör' },
+  'yaz': { id:'screen-yaz', title:'Sahne Yaz', sub:'Tema, tarz ve teknik seçerek sahne oluştur' },
+  'sahneler': { id:'screen-sahneler', title:'Sahnelerim', sub:'Yazdığınız tüm sahneler' },
+  'kontrol': { id:'screen-kontrol', title:'Kontrol Listesi', sub:'24 madde — yayına hazır mısınız?' },
+  'koc': { id:'screen-koc', title:'AI Koç', sub:'Yazarlık danışmanınız' },
+  'r-yas': { id:'screen-r-yas', title:'Yaş Grubu Rehberi', sub:'4–6 yaş gelişim profili' },
+  'r-tema': { id:'screen-r-tema', title:'Tema Rehberi', sub:'Harita ve 4 katman modeli' },
+  'r-yapi': { id:'screen-r-yapi', title:'Yapı Rehberi', sub:'32 sayfa anatomisi ve spread planı' },
+  'r-dil': { id:'screen-r-dil', title:'Dil Rehberi', sub:'Kelime seçimi ve cümle yapısı' },
+  'r-gorsel': { id:'screen-r-gorsel', title:'Görsel İlişki Rehberi', sub:'Metin-görsel diyalogu ve 5 model' },
+  'r-teknik': { id:'screen-r-teknik', title:'7 Anlatı Tekniği', sub:'Her teknik için zayıf-güçlü örnekler' },
+  'r-surec': { id:'screen-r-surec', title:'Yazma Süreci', sub:'Fikirden taslağa — 5 adım' },
+};
+
+function nav(key){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const map = SCREEN_MAP[key];
+  if(!map) return;
+  const screen = document.getElementById(map.id);
+  if(screen) screen.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes(`'${key}'`)) n.classList.add('active');
+  });
+  document.getElementById('topbar-title').textContent = map.title;
+  document.getElementById('topbar-sub').textContent = map.sub;
+
+  if(key==='storymap') updateRitimDisplay();
+  if(key==='sahneler') renderSahneler();
+  if(key==='kontrol') updateChecklist();
+}
+
+// ═══════════════════════════════════════════════════════════
+// KITAP
+// ═══════════════════════════════════════════════════════════
+function saveKitap(){
+  const fields = { 'kitap-adi':'adi','kitap-karakter':'karakter','kitap-yara':'yara','kitap-sembol':'sembol','tek-cumle':'tekCumle','son-gorsel':'sonGorsel','duygusal-soru':'duygusalSoru' };
+  Object.entries(fields).forEach(([id,key])=>{ const el=document.getElementById(id); if(el) S.kitap[key]=el.value; });
+  save();
+  updateSidebar();
+}
+
+function updateSidebar(){
+  const name = S.kitap.adi || 'Henüz başlık girilmedi';
+  document.getElementById('sb-book-name-display').textContent = name;
+  const words = S.sahneler.reduce((a,s)=>a+(s.metin||'').split(/\s+/).filter(Boolean).length,0);
+  document.getElementById('sb-kelime').textContent = words;
+  const pct = Math.min(100, Math.round(words/10));
+  document.getElementById('sb-bar').style.width = pct+'%';
+  const done = Object.values(S.checks).filter(Boolean).length;
+  document.getElementById('nb-spread').textContent = S.spreads.filter(s=>s.filled).length+'/14';
+  document.getElementById('nb-sahne').textContent = S.sahneler.length;
+  document.getElementById('nb-check').textContent = done+'/24';
+}
+
+function updateStats(){
+  const spreadCount = S.spreads.filter(s=>s.filled).length;
+  const words = S.sahneler.reduce((a,s)=>a+(s.metin||'').split(/\s+/).filter(Boolean).length,0);
+  const done = Object.values(S.checks).filter(Boolean).length;
+  document.getElementById('stat-spread').textContent = spreadCount;
+  document.getElementById('stat-sahne').textContent = S.sahneler.length;
+  document.getElementById('stat-kelime').textContent = words;
+  document.getElementById('stat-check').textContent = done;
+}
+
+// ═══════════════════════════════════════════════════════════
+// SPREAD GRID
+// ═══════════════════════════════════════════════════════════
+const SECTION_CLASSES = ['section-giris','section-giris','section-giris','section-gelisme1','section-gelisme1','section-gelisme1','section-gelisme1','section-gelisme2','section-gelisme2','section-gelisme2','section-gelisme2','section-sonuc','section-sonuc','section-sonuc'];
+
+function buildSpreadGrid(){
+  const grid = document.getElementById('spread-grid');
+  grid.innerHTML = '';
+  S.spreads.forEach((sp,i)=>{
+    const el = document.createElement('div');
+    el.className = 'spread-card '+(sp.filled?'filled ':'')+SECTION_CLASSES[i];
+    el.onclick = ()=>openSpreadModal(i);
+    el.innerHTML = `
+      <div class="spread-num">SPREAD ${i+1}</div>
+      <div class="spread-duygu">${sp.duygu||'<span style="color:var(--ink4);font-style:italic;font-size:11px">Boş</span>'}</div>
+      <div class="spread-eylem">${sp.eylem||''}</div>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+function openSpreadModal(i){
+  S.currentSpread = i;
+  const sp = S.spreads[i];
+  const sections = ['Giriş (1–3)','Giriş (1–3)','Giriş (1–3)','Gelişme I (4–7)','Gelişme I (4–7)','Gelişme I (4–7)','Gelişme I (4–7)','Gelişme II (8–11)','Gelişme II (8–11)','Gelişme II (8–11)','Gelişme II (8–11)','Sonuç (12–14)','Sonuç (12–14)','Sonuç (12–14)'];
+  document.getElementById('sm-title').textContent = `Spread ${i+1}`;
+  document.getElementById('sm-section').textContent = sections[i];
+  document.getElementById('sm-duygu').value = sp.duygu||'';
+  document.getElementById('sm-eylem').value = sp.eylem||'';
+  document.getElementById('sm-gorsel').value = sp.gorsel||'';
+  document.getElementById('sm-metin').value = sp.metin||'';
+  document.getElementById('sm-baglanti').value = sp.baglanti||'';
+  document.getElementById('spread-modal').classList.add('open');
+}
+
+function closeSpreadModal(){ document.getElementById('spread-modal').classList.remove('open'); }
+
+function saveSpread(){
+  const i = S.currentSpread;
+  S.spreads[i] = {
+    duygu: document.getElementById('sm-duygu').value,
+    eylem: document.getElementById('sm-eylem').value,
+    gorsel: document.getElementById('sm-gorsel').value,
+    metin: document.getElementById('sm-metin').value,
+    baglanti: document.getElementById('sm-baglanti').value,
+    filled: !!(document.getElementById('sm-duygu').value||document.getElementById('sm-metin').value),
+  };
+  save(); buildSpreadGrid(); updateRitimDisplay(); updateStats(); updateSidebar();
+  closeSpreadModal();
+}
+
+function clearSpread(){
+  S.spreads[S.currentSpread] = { duygu:'',eylem:'',gorsel:'',metin:'',baglanti:'',filled:false };
+  save(); buildSpreadGrid(); updateRitimDisplay(); updateStats(); updateSidebar();
+  closeSpreadModal();
+}
+
+function updateRitimDisplay(){
+  const filled = S.spreads.filter(s=>s.duygu);
+  if(!filled.length){ document.getElementById('ritim-display').textContent='Henüz spread planlanmadı…'; return; }
+  const words = S.spreads.map((s,i)=>s.duygu?`<span style="color:${getSecColor(i)};font-weight:600">${s.duygu}</span>`:'<span style="color:var(--cream3)">···</span>').join(' → ');
+  document.getElementById('ritim-display').innerHTML = words;
+}
+
+function getSecColor(i){ const c=['var(--forest)','var(--forest)','var(--forest)','var(--gold)','var(--gold)','var(--gold)','var(--gold)','var(--plum)','var(--plum)','var(--plum)','var(--plum)','var(--terra)','var(--terra)','var(--terra)']; return c[i]; }
+
+// ═══════════════════════════════════════════════════════════
+// WIZARD
+// ═══════════════════════════════════════════════════════════
+function buildTemaGrid(){
+  const g = document.getElementById('tema-grid');
+  g.innerHTML = TEMALAR.map(t=>`
+    <div class="tema-card" id="tema-${t.id}" style="--tc:${t.color};border-color:${t.id===S.wizard.tema?.id?'currentColor':'var(--cream3)'}" onclick="selectTema('${t.id}')">
+      <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:${t.color}"></div>
+      <div class="tema-icon">${t.icon}</div>
+      <div class="tema-name" style="color:${t.color}">${t.name}</div>
+      <div class="tema-alts">${t.alts}</div>
+    </div>
+  `).join('');
+}
+
+function selectTema(id){
+  S.wizard.tema = TEMALAR.find(t=>t.id===id);
+  document.querySelectorAll('.tema-card').forEach(c=>c.style.borderColor='var(--cream3)');
+  const el = document.getElementById('tema-'+id);
+  if(el) el.style.borderColor = S.wizard.tema.color;
+  setTimeout(()=>nextWizard(),200);
+}
+
+function buildTarzGrid(){
+  const g = document.getElementById('tarz-grid');
+  g.innerHTML = TARZLAR.map(t=>`
+    <div class="choice-card ${S.wizard.tarz?.id===t.id?'selected':''}" onclick="selectTarz('${t.id}')">
+      <div class="choice-icon">${t.icon}</div>
+      <div class="choice-name">${t.name}</div>
+      <div class="choice-desc">${t.desc}</div>
+    </div>
+  `).join('');
+}
+
+function selectTarz(id){
+  S.wizard.tarz = TARZLAR.find(t=>t.id===id);
+  document.querySelectorAll('.choice-card').forEach(c=>c.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  setTimeout(()=>nextWizard(),200);
+}
+
+function buildTeknikGrid(){
+  const g = document.getElementById('teknik-grid');
+  g.innerHTML = TEKNIKLER.map(t=>`
+    <div class="teknik-card ${S.wizard.teknik?.no===t.no?'selected':''}" style="border-color:${S.wizard.teknik?.no===t.no?t.color:'var(--cream3)'}" onclick="selectTeknik('${t.no}')">
+      <div class="teknik-num">${t.no}</div>
+      <div class="teknik-name">${t.name}</div>
+      <div class="teknik-rule" style="color:${t.color}">${t.rule}</div>
+    </div>
+  `).join('');
+}
+
+function selectTeknik(no){
+  S.wizard.teknik = TEKNIKLER.find(t=>t.no===no);
+  document.querySelectorAll('.teknik-card').forEach(c=>{ c.classList.remove('selected'); c.style.borderColor='var(--cream3)'; });
+  event.currentTarget.classList.add('selected');
+  event.currentTarget.style.borderColor = S.wizard.teknik.color;
+  setTimeout(()=>nextWizard(),200);
+}
+
+let currentWizardStep = 1;
+function goWizard(n){
+  currentWizardStep = n;
+  for(let i=1;i<=5;i++){
+    document.getElementById('wc'+i).classList.toggle('active',i===n);
+    const ws = document.getElementById('ws'+i);
+    ws.classList.toggle('active',i===n);
+    ws.classList.toggle('done',i<n);
+  }
+  document.getElementById('btn-prev').style.display = n>1?'inline-flex':'none';
+  document.getElementById('btn-next').style.display = n<5?'inline-flex':'none';
+  if(n===5){
+    const txt = document.getElementById('sahne-metin').value;
+    document.getElementById('sahne-preview').textContent = txt || 'Metin henüz yok…';
+  }
+}
+function nextWizard(){ if(currentWizardStep<5) goWizard(currentWizardStep+1); }
+function prevWizard(){ if(currentWizardStep>1) goWizard(currentWizardStep-1); }
+
+function generateText(){
+  const mekan = document.getElementById('q-mekan').value;
+  const eylem = document.getElementById('q-eylem').value;
+  const duygu = document.getElementById('q-duygu').value;
+  const sembol = document.getElementById('q-sembol').value;
+  const teknik = S.wizard.teknik;
+  const tarz = S.wizard.tarz;
+
+  const templates = {
+    '1': (m,e,d,s)=> `${e}. Durdu. ${s?`${s} orada yatıyordu. `:''}Bir adım geri gitti.`,
+    '2': (m,e,d,s)=> `${e}. ${s?`${s}a baktı.`:''} Bir süre bekledi. Kalktı.`,
+    '3': (m,e,d,s)=> `Kalbi hızlandı. Elleri soğudu. ${e?e+'.':''} ${s||'Orası'} orada duruyordu.`,
+    '4': (m,e,d,s)=> `${s||'O şey'} — sadece bir ${s||'nesne'} değildi artık. ${e?e+'.':''}`,
+    '5': (m,e,d,s)=> `${e?e+'. ':''}${e?e+'. ':''}${e?e+'.':'Yine.'}`,
+    '6': (m,e,d,s)=> `${e?e+'. ':''}${s?`${s} hâlâ oradaydı.`:''} Belki yarın farklı olurdu.`,
+    '7': (m,e,d,s)=> tarz?.id==='siirsel'?`${m?m+'nın içinde ':''}${e||'duruyordu'}. ${s||''}`:`${e||'Orada durdu'}. ${m?'İşte, '+m+'.':''}`,
+  };
+
+  const no = teknik?.no||'1';
+  const fn = templates[no]||(()=>'Bir cümle yazın…');
+  const text = fn(mekan, eylem, duygu, sembol);
+  document.getElementById('sahne-metin').value = text;
+}
+
+function saveSahne(){
+  const metin = document.getElementById('sahne-metin').value;
+  const gorsel = document.getElementById('sahne-gorsel').value;
+  const baslik = document.getElementById('sahne-baslik').value || 'İsimsiz Sahne';
+  const spread = document.getElementById('sahne-spread').value;
+  if(!metin.trim()){ alert('Önce sahne metni yazın.'); return; }
+  S.sahneler.push({
+    id: Date.now(),
+    baslik, metin, gorsel, spread,
+    tema: S.wizard.tema?.name||'',
+    tarz: S.wizard.tarz?.name||'',
+    teknik: S.wizard.teknik?.name||'',
+    tarih: new Date().toLocaleDateString('tr-TR'),
+  });
+  save(); updateStats(); updateSidebar();
+  // reset
+  document.getElementById('sahne-metin').value='';
+  document.getElementById('sahne-gorsel').value='';
+  document.getElementById('sahne-baslik').value='';
+  document.getElementById('sahne-spread').value='';
+  S.wizard = {step:1,tema:null,tarz:null,teknik:null};
+  goWizard(1);
+  buildTemaGrid(); buildTarzGrid(); buildTeknikGrid();
+  alert('✓ Sahne kaydedildi!');
+}
+
+// ═══════════════════════════════════════════════════════════
+// SAHNELER
+// ═══════════════════════════════════════════════════════════
+function renderSahneler(){
+  const el = document.getElementById('sahneler-list');
+  if(!S.sahneler.length){
+    el.innerHTML=`<div style="text-align:center;padding:60px 20px;color:var(--ink4)"><div style="font-size:48px;margin-bottom:12px">📝</div><div style="font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:8px">Henüz sahne yok</div><div style="font-size:14px">Sahne Yaz menüsünden ilk sahnenizi oluşturun</div></div>`;
+    return;
+  }
+  el.innerHTML = S.sahneler.map(s=>`
+    <div class="scene-card" onclick="openSceneModal(${s.id})">
+      <div class="scene-badges">
+        ${s.tema?`<span class="badge" style="background:var(--terra-bg);color:var(--terra)">${s.tema}</span>`:''}
+        ${s.teknik?`<span class="badge" style="background:var(--forest-bg);color:var(--forest)">${s.teknik}</span>`:''}
+        ${s.tarz?`<span class="badge" style="background:var(--cream2);color:var(--ink3)">${s.tarz}</span>`:''}
+        ${s.spread?`<span class="badge" style="background:var(--plum-bg);color:var(--plum)">Spread ${s.spread}</span>`:''}
+      </div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--ink);margin-bottom:6px">${s.baslik}</div>
+      <div class="scene-text">${s.metin.substring(0,160)}${s.metin.length>160?'…':''}</div>
+      <div class="scene-meta">${s.tarih} · ${(s.metin.split(/\s+/).filter(Boolean).length)} kelime</div>
+    </div>
+  `).join('');
+}
+
+function openSceneModal(id){
+  const s = S.sahneler.find(x=>x.id===id);
+  if(!s) return;
+  S.currentScene = id;
+  document.getElementById('scm-title').textContent = s.baslik;
+  document.getElementById('scm-badges').innerHTML = [
+    s.tema&&`<span class="badge" style="background:var(--terra-bg);color:var(--terra)">${s.tema}</span>`,
+    s.teknik&&`<span class="badge" style="background:var(--forest-bg);color:var(--forest)">${s.teknik}</span>`,
+    s.tarz&&`<span class="badge" style="background:var(--cream2);color:var(--ink3)">${s.tarz}</span>`,
+    s.spread&&`<span class="badge" style="background:var(--plum-bg);color:var(--plum)">Spread ${s.spread}</span>`,
+  ].filter(Boolean).join('');
+  document.getElementById('scm-metin').textContent = s.metin;
+  document.getElementById('scm-gorsel').innerHTML = s.gorsel?`<b style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--plum)">Görsel Notu:</b> ${s.gorsel}`:'';
+  document.getElementById('scene-modal').classList.add('open');
+}
+
+function closeSceneModal(){ document.getElementById('scene-modal').classList.remove('open'); }
+
+function deleteSahne(){
+  if(!confirm('Bu sahne silinecek. Emin misiniz?')) return;
+  S.sahneler = S.sahneler.filter(s=>s.id!==S.currentScene);
+  save(); renderSahneler(); updateStats(); updateSidebar();
+  closeSceneModal();
+}
+
+// ═══════════════════════════════════════════════════════════
+// CHECKLIST
+// ═══════════════════════════════════════════════════════════
+let allCheckItems = [];
+function buildChecklist(){
+  allCheckItems = [];
+  Object.entries(CHECKLIST).forEach(([cat,items])=>items.forEach(item=>allCheckItems.push({ cat, item, key: cat+':'+item })));
+  renderChecklist();
+}
+
+function renderChecklist(){
+  const mid = Math.ceil(allCheckItems.length/2);
+  const col1 = document.getElementById('cl-col1');
+  const col2 = document.getElementById('cl-col2');
+  if(!col1||!col2) return;
+
+  const renderSection=(items, container)=>{
+    const cats = [...new Set(items.map(x=>x.cat))];
+    container.innerHTML = cats.map(cat=>{
+      const catItems = items.filter(x=>x.cat===cat);
+      return `<div class="card" style="margin-bottom:14px">
+        <div class="card-title" style="font-size:17px">${cat}</div>
+        ${catItems.map(x=>`
+          <div class="check-item ${S.checks[x.key]?'checked':''}" onclick="toggleCheck('${x.key}')">
+            <div class="check-box">${S.checks[x.key]?'✓':''}</div>
+            <div class="check-text">${x.item}</div>
+          </div>
+        `).join('')}
+      </div>`;
+    }).join('');
+  };
+
+  const entries = Object.entries(CHECKLIST);
+  const leftCats = entries.slice(0,2);
+  const rightCats = entries.slice(2);
+
+  col1.innerHTML = leftCats.map(([cat,items])=>`
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-title" style="font-size:17px">${cat}</div>
+      ${items.map(item=>{ const key=cat+':'+item; return `
+        <div class="check-item ${S.checks[key]?'checked':''}" onclick="toggleCheck('${key}')">
+          <div class="check-box">${S.checks[key]?'✓':''}</div>
+          <div class="check-text">${item}</div>
+        </div>
+      `}).join('')}
+    </div>
+  `).join('');
+
+  col2.innerHTML = rightCats.map(([cat,items])=>`
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-title" style="font-size:17px">${cat}</div>
+      ${items.map(item=>{ const key=cat+':'+item; return `
+        <div class="check-item ${S.checks[key]?'checked':''}" onclick="toggleCheck('${key}')">
+          <div class="check-box">${S.checks[key]?'✓':''}</div>
+          <div class="check-text">${item}</div>
+        </div>
+      `}).join('')}
+    </div>
+  `).join('');
+
+  updateChecklist();
+}
+
+function toggleCheck(key){
+  S.checks[key] = !S.checks[key];
+  save(); renderChecklist(); updateStats(); updateSidebar();
+}
+
+function updateChecklist(){
+  const done = Object.values(S.checks).filter(Boolean).length;
+  const total = 24;
+  const pct = Math.round(done/total*100);
+  const pp = document.getElementById('check-pct');
+  const pb = document.getElementById('check-progress');
+  const pt = document.getElementById('check-count-text');
+  if(pp) pp.textContent = '%'+pct;
+  if(pb) pb.style.width = pct+'%';
+  if(pt) pt.textContent = done+' / '+total+' madde tamamlandı';
+}
+
+// ═══════════════════════════════════════════════════════════
+// REHBER: TEKNİK
+// ═══════════════════════════════════════════════════════════
+function buildTeknikRehber(){
+  const el = document.getElementById('teknik-rehber-list');
+  if(!el) return;
+  el.innerHTML = TEKNIKLER.map(t=>`
+    <div class="acc">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:36px;height:36px;border-radius:10px;background:${t.color};color:white;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0">${t.no}</div>
+          <div>
+            <div style="font-weight:700;font-size:15px">${t.name}</div>
+            <div style="font-size:11px;color:var(--ink4)">${t.ing} · <span style="color:${t.color}">${t.rule}</span></div>
+          </div>
+        </div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body">
+        <p style="font-size:14px;color:var(--ink2);line-height:1.7;margin-bottom:14px">${t.desc}</p>
+        <div class="ws">
+          <div class="ws-w"><span class="ws-lbl" style="color:#DC2626">✗ Zayıf</span><p class="ws-text">${t.zayif}</p></div>
+          <div class="ws-s"><span class="ws-lbl" style="color:var(--forest)">✓ Güçlü</span><p class="ws-text">${t.guclu}</p></div>
+        </div>
+        <div class="info info-gold" style="margin-top:12px">💡 ${t.ipucu}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+// REHBER: SÜREÇ
+// ═══════════════════════════════════════════════════════════
+function buildSurecList(){
+  const el = document.getElementById('surec-list');
+  if(!el) return;
+  el.innerHTML = SURECLER.map(s=>`
+    <div class="acc">
+      <div class="acc-header" onclick="toggleAcc(this)">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:36px;height:36px;border-radius:50%;background:${s.color};color:white;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;flex-shrink:0">${s.n}</div>
+          <div style="font-weight:700;font-size:15px">${s.title}</div>
+        </div>
+        <span class="acc-arrow">▼</span>
+      </div>
+      <div class="acc-body">
+        ${s.items.map(item=>`<div class="list-item"><div class="list-dot">▸</div><div>${item}</div></div>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleAcc(header){
+  const acc = header.closest('.acc');
+  acc.classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════════════════
+// AI KOÇ
+// ═══════════════════════════════════════════════════════════
+function saveApiKey(){
+  S.apiKey = document.getElementById('api-key-input').value;
+  save();
+}
+
+const FALLBACK_RESPONSES = {
+  'metin kontrol': 'Metninizi paylaşırsanız inceleyebilirim. Özellikle duygu sıfatı kullanıp kullanmadığınıza ve "göster-söyleme" kuralını uyguladığınıza bakacağım.',
+  'karakter': 'Karakterin içsel çatışması net mi? "Kim bu karakter, ne istiyor, neden elde edemiyor?" sorusunu yanıtlayabilmelisiniz. Yarası ne?',
+  'duygu sıfatı': 'Metninizde "üzgün", "mutlu", "korkmuş" gibi kelimeler varsa, bunları silin. Bunun yerine karakterin bedenini anlatın: "Elleri soğudu. Geri adım attı." daha güçlü.',
+  'son': 'Son spread bir kapı açmalı, pencereyi değil. Okuyucu oradan çıkabilmeli. "Ve o günden sonra her şey yoluna girdi" yazmayın — açık bırakın.',
+  'teknik': 'En çok zorlandığınız sahneyi yazın, ben de hangi tekniğin işe yarayacağını analiz edeyim. Genellikle "ima etme" tekniği, söylenmeyeni anlatmak için en güçlü araçtır.',
+  'görsel': 'Metin ne diyorsa görsel onu tekrar etmemeli. Metninizi okuyun — görsel farklı bir şey mi söylüyor? Yoksa aynı şeyi mi tekrarlıyor?',
+};
+
+async function sendChat(){
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if(!msg) return;
+  addMsg(msg, true);
+  input.value = '';
+
+  if(S.apiKey && S.apiKey.startsWith('sk-')){
+    await callClaude(msg);
+  } else {
+    setTimeout(()=>{
+      const lower = msg.toLowerCase();
+      let resp = 'Sorunuzu anlıyorum. Daha spesifik bilgi vermek için metin paylaşabilir ya da hangi sahneyle ilgili olduğunu söyleyebilirsiniz.';
+      for(const [k,v] of Object.entries(FALLBACK_RESPONSES)){
+        if(lower.includes(k)){ resp=v; break; }
+      }
+      addMsg(resp, false);
+    }, 700);
+  }
+}
+
+function askCoach(q){ document.getElementById('chat-input').value=q; sendChat(); }
+
+async function callClaude(msg){
+  addMsg('…', false, true);
+  try {
+    const ctx = `Sen deneyimli bir resimli çocuk kitabı yazarlık koçusun. Kullanıcı 4-6 yaş için kitap yazıyor. Kitap adı: "${S.kitap.adi||'henüz belirlenmedi'}". Karakter: "${S.kitap.karakter||'henüz belirlenmedi'}". Kısa, pratik, somut tavsiyeler ver. Türkçe konuş.`;
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':S.apiKey,'anthropic-version':'2023-06-01'},
+      body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:600, system:ctx, messages:[{role:'user',content:msg}] })
+    });
+    const data = await resp.json();
+    removeTyping();
+    addMsg(data.content?.[0]?.text||'Yanıt alınamadı.', false);
+  } catch(e){
+    removeTyping();
+    addMsg('Bağlantı hatası. API anahtarınızı kontrol edin.', false);
+  }
+}
+
+function addMsg(text, isUser, isTyping=false){
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'msg'+(isUser?' user':'');
+  if(isTyping) div.id='typing-bubble';
+  div.innerHTML = `<div class="msg-avatar">${isUser?'✍️':'🤖'}</div><div class="msg-bubble">${isTyping?'<i>yazıyor…</i>':text}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTyping(){ const el=document.getElementById('typing-bubble'); if(el) el.remove(); }
+
+// ═══════════════════════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
