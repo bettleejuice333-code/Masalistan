@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resimli Kitap Atölyesi</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;600;700;800&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:linear-gradient(160deg,#0f0c1d,#1a1030,#0d1a0f);
+  color:#e8e0f0;
+  font-family:'Nunito',sans-serif;
+  overflow:hidden;
+}
+
+/* HEADER */
+.header{
+  background:rgba(255,255,255,0.04);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-shrink:0;
+}
+.header-icon{
+  width:38px;height:38px;
+  background:linear-gradient(135deg,#c9a84c,#8b5e3c);
+  border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;flex-shrink:0;
+  box-shadow:0 4px 14px rgba(201,168,76,0.3);
+}
+.header-title{font-family:'Lora',serif;font-size:0.95rem;color:#e8d5a0;font-weight:600;}
+.header-sub{font-size:0.62rem;color:#7a6a9a;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+
+/* STAGE BAR */
+.stagebar{
+  display:flex;gap:5px;padding:8px 12px;
+  background:rgba(0,0,0,0.2);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  overflow-x:auto;flex-shrink:0;
+  scrollbar-width:none;
+}
+.stagebar::-webkit-scrollbar{display:none;}
+.stage-chip{
+  display:flex;align-items:center;gap:4px;
+  padding:4px 10px;border-radius:99px;
+  white-space:nowrap;font-size:0.68rem;
+  flex-shrink:0;transition:all 0.3s;
+  border:1px solid rgba(255,255,255,0.06);
+  background:rgba(255,255,255,0.03);
+  color:#5a4a7a;
+}
+.stage-chip.active{background:rgba(201,168,76,0.18);border-color:rgba(201,168,76,0.4);color:#e8d5a0;font-weight:700;}
+.stage-chip.done{background:rgba(6,214,160,0.08);border-color:rgba(6,214,160,0.25);color:#06d6a0;}
+
+/* MESSAGES */
+.messages{
+  flex:1;overflow-y:auto;
+  padding:16px;
+  display:flex;flex-direction:column;gap:14px;
+}
+.messages::-webkit-scrollbar{width:3px;}
+.messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:99px;}
+
+/* WELCOME */
+.welcome{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  flex:1;text-align:center;padding:20px;
+  min-height:100%;
+}
+.welcome-emoji{font-size:3.5rem;margin-bottom:16px;animation:float 3s ease-in-out infinite;}
+.welcome h2{font-family:'Lora',serif;color:#e8d5a0;font-size:1.5rem;margin-bottom:10px;line-height:1.3;}
+.welcome p{color:#7a6a9a;font-size:0.88rem;line-height:1.8;max-width:320px;margin-bottom:24px;}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:300px;margin-bottom:28px;}
+.feature-item{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px 12px;font-size:0.75rem;color:#a090c0;text-align:left;}
+.start-btn{
+  background:linear-gradient(135deg,#c9a84c,#8b5e3c);
+  color:#1a0a00;border:none;border-radius:12px;
+  padding:14px 38px;font-size:1rem;font-weight:800;
+  cursor:pointer;font-family:'Lora',serif;
+  box-shadow:0 6px 24px rgba(201,168,76,0.3);
+  transition:transform 0.2s;letter-spacing:0.3px;
+}
+.start-btn:hover{transform:translateY(-2px);}
+
+/* BUBBLE */
+.bubble-row{display:flex;gap:8px;align-items:flex-start;}
+.bubble-row.user{justify-content:flex-end;}
+.bubble-avatar{
+  width:28px;height:28px;border-radius:7px;
+  background:linear-gradient(135deg,#c9a84c,#8b5e3c);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.8rem;flex-shrink:0;margin-top:2px;
+}
+.bubble{
+  max-width:80%;padding:12px 16px;
+  font-size:0.9rem;line-height:1.85;
+  white-space:pre-wrap;word-break:break-word;
+}
+.bubble.ai{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:3px 14px 14px 14px;
+  font-family:'Lora',serif;color:#e0d8f0;
+}
+.bubble.user{
+  background:rgba(201,168,76,0.14);
+  border:1px solid rgba(201,168,76,0.28);
+  border-radius:14px 3px 14px 14px;
+  color:#e8d5a0;
+}
+
+/* TYPING */
+.typing{display:flex;gap:5px;padding:14px 18px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:3px 14px 14px 14px;}
+.dot{width:6px;height:6px;border-radius:50%;background:#c9a84c;}
+.dot:nth-child(1){animation:bounce 1.2s 0s infinite;}
+.dot:nth-child(2){animation:bounce 1.2s 0.2s infinite;}
+.dot:nth-child(3){animation:bounce 1.2s 0.4s infinite;}
+
+/* INPUT */
+.input-area{
+  background:rgba(15,12,29,0.98);
+  border-top:1px solid rgba(255,255,255,0.08);
+  padding:10px 14px;flex-shrink:0;
+}
+.input-row{
+  display:flex;gap:8px;align-items:center;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:12px;padding:6px 8px 6px 14px;
+}
+.input-row input{
+  flex:1;background:none;border:none;outline:none;
+  color:#e0d8f0;font-size:0.92rem;font-family:'Nunito',sans-serif;
+}
+.input-row input::placeholder{color:#3a2a5a;}
+.send-btn{
+  width:36px;height:36px;border-radius:8px;border:none;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;cursor:pointer;transition:all 0.2s;
+  flex-shrink:0;
+}
+.send-btn.active{background:linear-gradient(135deg,#c9a84c,#8b5e3c);color:#1a0a00;}
+.send-btn.inactive{background:rgba(255,255,255,0.06);color:#3a2a5a;cursor:not-allowed;}
+
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes bounce{0%,100%{transform:translateY(0);opacity:.4}50%{transform:translateY(-5px);opacity:1}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-icon">📖</div>
+  <div>
+    <div class="header-title">Resimli Kitap Atölyesi</div>
+    <div class="header-sub">4–6 Yaş · Yazarlık Koçu</div>
+  </div>
+</div>
+
+<!-- STAGE BAR -->
+<div class="stagebar" id="stagebar" style="display:none">
+  <div class="stage-chip active" id="s0">💡 Fikir</div>
+  <div class="stage-chip" id="s1">🎯 Tema</div>
+  <div class="stage-chip" id="s2">🧒 Karakter</div>
+  <div class="stage-chip" id="s3">🗺️ Story Map</div>
+  <div class="stage-chip" id="s4">✍️ Taslak</div>
+  <div class="stage-chip" id="s5">🔄 Revizyon</div>
+  <div class="stage-chip" id="s6">✅ Kontrol</div>
+</div>
+
+<!-- MESSAGES -->
+<div class="messages" id="messages">
+  <div class="welcome" id="welcome">
+    <div class="welcome-emoji">📖</div>
+    <h2>Resimli Kitap<br>Atölyesi</h2>
+    <p>PDF rehberini okudum. Fikir bulmaktan revizyona kadar profesyonel bir editör gibi yanınızdayım.</p>
+    <div class="feature-grid">
+      <div class="feature-item">💡 Fikir doğrulama</div>
+      <div class="feature-item">🗺️ 14 spread map</div>
+      <div class="feature-item">✍️ Kirli taslak</div>
+      <div class="feature-item">🔄 6 revizyon turu</div>
+    </div>
+    <button class="start-btn" onclick="startChat()">Yazmaya Başla →</button>
+  </div>
+</div>
+
+<!-- INPUT -->
+<div class="input-area" id="inputArea" style="display:none">
+  <div class="input-row">
+    <input type="text" id="userInput" placeholder="Cevabınızı yazın..." onkeydown="handleKey(event)" oninput="updateBtn()">
+    <button class="send-btn inactive" id="sendBtn" onclick="send()">↑</button>
+  </div>
+</div>
+
+<script>
+const SYSTEM = `Sen "Resimli Çocuk Kitabı Yazma Rehberi" kitabını içselleştirmiş profesyonel bir çocuk kitabı editörü ve yazarlık koçusun. 4-6 yaş grubu için resimli kitap yazan yazarlara adım adım rehberlik ediyorsun.
+
+REHBERİN TEMEL İLKELERİ:
+- 32 sayfa / 14 spread yapısı
+- 300-1000 kelime (ideal 500)
+- Spread başına 1-4 cümle, 5-12 kelime/cümle
+- Tek tema, derin işlenmiş (4 katman modeli)
+- Göster söyleme (Show don't tell)
+- Metin ve görsel aynı şeyi anlatmaz - karşı nokta, zaman farkı, iç/dış modelleri
+- Duygusal yolculuk, ders verme değil
+- Açık uçlu son
+- Sessiz spread kullanımı
+- Soyut kavramları somutlaştırma
+
+YAZARIN ADIMLARI:
+1. Fikir ve Doğrulama - kişisel bağlantı, görsel potansiyel, tek cümle özeti
+2. Tema Derinleştirme - 4 katman: evrensel gerçek, özgül durum, karakter filtresi, özgün an
+3. Karakter ve Yara - 5 temel karar, iç çatışma, eksiklik
+4. Story Map - 14 spread dökümü: duygusal fonksiyon + eylem + görsel
+5. Kirli Taslak - bir oturuşta yazmak, düzeltmemek
+6. Revizyon Turları - yapı, karakter, dil, ses, görsel, çocuk turu
+7. Kontrol Listesi - yaş uygunluğu, hikaye, dil, metin-görsel ilişkisi
+
+KONUŞMA TARZI:
+- Sıcak ama profesyonel editör gibi konuş
+- Her adımda tek bir şey sor, çok soru yığma
+- Yazarın cevabına göre somut kişiselleştirilmiş geri bildirim ver
+- Zayıf örnekleri güçlüye dönüştürerek göster
+- Türkçe yaz
+- İlk mesajda kendini tanıt, yazarın fikrinin olup olmadığını sor`;
+
+let history = [];
+let currentStage = 0;
+let isLoading = false;
+
+function startChat() {
+  document.getElementById('welcome').remove();
+  document.getElementById('stagebar').style.display = 'flex';
+  document.getElementById('inputArea').style.display = 'block';
+  
+  history = [{ role: 'user', content: 'Merhaba, resimli çocuk kitabı yazmak istiyorum.' }];
+  callAPI();
+}
+
+function updateBtn() {
+  const v = document.getElementById('userInput').value.trim();
+  const btn = document.getElementById('sendBtn');
+  btn.className = 'send-btn ' + (v ? 'active' : 'inactive');
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter') send();
+}
+
+function send() {
+  const input = document.getElementById('userInput');
+  const text = input.value.trim();
+  if (!text || isLoading) return;
+  input.value = '';
+  updateBtn();
+  addBubble('user', text);
+  history.push({ role: 'user', content: text });
+  callAPI();
+}
+
+function addBubble(role, text) {
+  const msgs = document.getElementById('messages');
+  const row = document.createElement('div');
+  row.className = 'bubble-row ' + role;
+  
+  if (role === 'ai') {
+    row.innerHTML = `<div class="bubble-avatar">📖</div><div class="bubble ai">${text}</div>`;
+  } else {
+    row.innerHTML = `<div class="bubble user">${text}</div>`;
+  }
+  
+  msgs.appendChild(row);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping() {
+  const msgs = document.getElementById('messages');
+  const row = document.createElement('div');
+  row.className = 'bubble-row ai';
+  row.id = 'typing-indicator';
+  row.innerHTML = `<div class="bubble-avatar">📖</div><div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  msgs.appendChild(row);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing-indicator');
+  if (t) t.remove();
+}
+
+function detectStage(text) {
+  const t = text.toLowerCase();
+  if (t.includes('kontrol listesi') || t.includes('tebrik')) return 6;
+  if (t.includes('revizyon')) return 5;
+  if (t.includes('kirli taslak') || t.includes('yazmaya başl')) return 4;
+  if (t.includes('story map') || t.includes('spread döküm') || t.includes('14 spread')) return 3;
+  if (t.includes('karakter') && (t.includes('yara') || t.includes('iç çatışma'))) return 2;
+  if (t.includes('tema') && t.includes('katman')) return 1;
+  return currentStage;
+}
+
+function updateStage(n) {
+  if (n <= currentStage) return;
+  currentStage = n;
+  for (let i = 0; i < 7; i++) {
+    const el = document.getElementById('s' + i);
+    el.className = 'stage-chip ' + (i === n ? 'active' : i < n ? 'done' : '');
+    if (i < n && !el.textContent.includes('✓')) {
+      el.textContent = el.textContent + ' ✓';
+    }
+  }
+}
+
+async function callAPI() {
+  isLoading = true;
+  showTyping();
+  
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM,
+        messages: history
+      })
+    });
+    
+    const data = await res.json();
+    const reply = data.content.map(b => b.text || '').join('');
+    
+    removeTyping();
+    addBubble('ai', reply);
+    history.push({ role: 'assistant', content: reply });
+    updateStage(detectStage(reply));
+    
+  } catch (e) {
+    removeTyping();
+    addBubble('ai', '⚠️ Bağlantı hatası: ' + e.message + '\n\nİnternet bağlantınızı kontrol edin ve tekrar deneyin.');
+  }
+  
+  isLoading = false;
+}
+</script>
+</body>
+</html>
